@@ -1,0 +1,13 @@
+.DS_Store
+.nodemonignore
+.sass-cache/
+*.log
+node_modules/
+public/lib/
+config/env/local.js
+public/dist/
+.bower-*/
+.idea/
+uploads
+modules/users/client/img/profile/uploads
+*.pem

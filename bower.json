@@ -1,0 +1,22 @@
+{
+  "name": "meanjs",
+  "version": "0.4.0",
+  "description": "Fullstack JavaScript with MongoDB, Express, AngularJS, and Node.js.",
+  "dependencies": {
+    "bootstrap": "~3.3.4",
+    "angular": "~1.4.0",
+    "angular-resource": "~1.2",
+    "angular-animate": "~1.4.0",
+    "angular-mocks": "~1.2",
+    "angular-bootstrap": "~0.13.0",
+    "angular-ui-utils": "~0.2.3",
+    "angular-ui-router": "~0.2.10",
+    "angular-file-upload": "~1.1.5"
+  },
+  "resolutions": {
+    "angular": "~1.4.0",
+    "angular-animate": "~1.4.0",
+    "angular-bootstrap": "~0.13.0",
+    "angular-ui-utils": "~0.2.3"
+  }
+}
