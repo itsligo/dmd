@@ -1,0 +1,33 @@
+<section data-ng-controller="FarmersController" data-ng-init="findOne()">
+    <div class="page-header">
+        <h1 data-ng-bind="farmer.firstName"></h1>
+    </div>
+    <div class="pull-right" data-ng-show="authentication.user._id == farmer.user._id">
+        <a class="btn btn-primary" data-ui-sref="farmers.edit({farmerId: farmer._id})">
+            <i class="glyphicon glyphicon-edit"></i>
+        </a>
+        <a class="btn btn-primary" data-ng-click="remove();">
+            <i class="glyphicon glyphicon-trash"></i>
+        </a>
+    </div>
+    <small>
+        <em class="text-muted">
+            Posted on
+            <span data-ng-bind="farmer.created | date:'mediumDate'"></span>
+            by
+            <span data-ng-bind="farmer.user.displayName"></span>
+        </em>
+    </small>
+    <div>Farmer ID:</div>
+    <h5 class="list-group-item-heading" data-ng-bind="farmer._id"></h5>
+    <h4>
+        <span class="list-group-item-heading" data-ng-bind="farmer.title"></span>
+        <span class="list-group-item-text" data-ng-bind="farmer.firstName"></span><span>&nbsp;</span><span
+            class="list-group-item-text" data-ng-bind="farmer.lastName"></span>
+    </h4>
+    <h4>No. Herds: {{farmer.herds.length}}</h4>
+
+    <div ng-repeat="hrd in farmer.herds">
+        <p>Herds: {{hrd.herdName}},</p>
+    </div>
+</section>

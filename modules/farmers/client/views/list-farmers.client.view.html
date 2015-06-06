@@ -1,0 +1,32 @@
+<section data-ng-controller="FarmersController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>farmers</h1>
+    </div>
+    <div class="list-group">
+        <a data-ng-repeat="farmer in farmers" data-ui-sref="farmers.view({farmerId: farmer._id})"
+           class="list-group-item">
+            <small class="list-group-item-text">
+                Posted on
+                <span data-ng-bind="farmer.created | date:'mediumDate'"></span>
+                by
+                <span data-ng-bind="farmer.user.displayName"></span>
+                (User Id: <span data-ng-bind="farmer.user._id"></span>)
+            </small>
+            <div>Farmer ID:</div>
+            <h5 class="list-group-item-heading" data-ng-bind="farmer._id"></h5>
+            <h4>
+                <span class="list-group-item-heading" data-ng-bind="farmer.title"></span>
+                <span class="list-group-item-text" data-ng-bind="farmer.firstName"></span><span>&nbsp;</span><span
+                    class="list-group-item-text" data-ng-bind="farmer.lastName"></span>
+            </h4>
+
+
+            <p ng-repeat="hrd in farmers.herds">
+
+            <p>Herds: {{hrd.herdName}}</p>
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-if="farmers.$resolved && !farmers.length">
+        No farmers yet, why don't you <a data-ui-sref="farmers.create">create one</a>?
+    </div>
+</section>

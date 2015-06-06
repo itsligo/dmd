@@ -1,0 +1,64 @@
+<section data-ng-controller="FarmersController">
+    <div class="page-header">
+        <h1>New Farmer</h1>
+    </div>
+    <div class="col-md-12">
+        <form name="farmerForm" class="form-horizontal" data-ng-submit="create()" novalidate>
+            <fieldset>
+            <div class="row">
+                <div class="col-xs-2 col-md-2">
+                    <label class="control-label" for="title">Title</label>
+
+                    <div class="controls">
+                        <input name="title" type="text" data-ng-model="title" id="title" class="form-control"
+                               placeholder="Title" required>
+                    </div>
+                </div>
+                <div class="col-xs-3 col-md-3">
+                    <label class="control-label" for="firstName">First Name</label>
+
+                    <div class="controls">
+                        <input name="firstName" type="text" data-ng-model="firstName" id="firstName"
+                               class="form-control"
+                               placeholder="First Name" required>
+                    </div>
+                </div>
+                <div class="col-xs-3 col-md-3">
+                    <label class="control-label" for="lastName">Last Name</label>
+
+                    <div class="controls">
+                        <input name="lastName" type="text" data-ng-model="lastName" id="lastName"
+                               class="form-control"
+                               placeholder="Last Name">
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2">
+                    <button class="btn btn-success" ng-click="addHerd()">Add Herd</button>
+                </div>
+            </div>
+            <div class="row" ng-repeat="herd in herds">
+                <label class="control-label" for="herdName"> Herd Name></label>
+
+                <div class="controls">
+                    <input name="herdName" type="text" data-ng-model="herd.herdName" id="herdName"
+                           class="form-control"
+                           placeholder="Herd Name">
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-xs-2">
+                    <input type="submit" value="Update" class="btn btn-default">
+                </div>
+            </div>
+            <div data-ng-show="error" class="text-danger">
+                <strong data-ng-bind="error"></strong>
+            </div>
+            </fieldset>
+        </form>
+    </div>
+</section>
