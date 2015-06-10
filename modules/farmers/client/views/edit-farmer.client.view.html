@@ -1,104 +1,146 @@
 <section data-ng-controller="FarmersController" data-ng-init="findOne()">
     <div class="page-header">
-        <h1>Edit Farmer</h1>
+        <h1>{{farmer.firstName}} {{farmer.lastName}}</h1><lead>&nbsp;edit details</lead>
     </div>
     <div class="col-md-12">
         <form name="farmerForm" data-ng-submit="update()" novalidate>
             <br>
-                <div class="row">
 
-                    <div class="col-xs-2 col-md-2">
-                        <label class="control-label" for="title">Title</label>
+            <div class="row">
 
-                        <div class="controls">
-                            <input name="title" type="text" data-ng-model="farmer.title" id="title" class="form-control"
-                                   placeholder="Title" required>
-                        </div>
-                    </div>
-                    <div class="col-xs-3 col-md-3">
-                        <label class="control-label" for="firstName">First Name</label>
+                <div class="col-xs-2 col-md-2">
+                    <label class="control-label" for="title">Title</label>
 
-                        <div class="controls">
-                            <input name="firstName" type="text" data-ng-model="farmer.firstName" id="firstName"
-                                   class="form-control"
-                                   placeholder="First Name" required>
-                        </div>
-                    </div>
-                    <div class="col-xs-3 col-md-3">
-                        <label class="control-label" for="lastName">Last Name</label>
-
-                        <div class="controls">
-                            <input name="lastName" type="text" data-ng-model="farmer.lastName" id="lastName"
-                                   class="form-control"
-                                   placeholder="Last Name" required>
-                        </div>
-
+                    <div class="controls">
+                        <input name="title" type="text" data-ng-model="farmer.title" id="title" class="form-control"
+                               placeholder="Title" required>
                     </div>
                 </div>
-                <br>
-                <div class="row">
-                    <div class="col-xs-2 col-md-2">
+                <div class="col-xs-3 col-md-3">
+                    <label class="control-label" for="firstName">First Name</label>
 
-                        <div class="panel panel-info">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">
-                                    {{farmer.herds.length}} Herds</h3>
-                            </div>
-                            <ul class="list-group">
-                                <li ng-repeat="herd in farmer.herds" ng-class="{'active': selHerd.item==$index}"
-                                    ng-click="selHerd.item = $index"
-                                    class="list-group-item">{{herd.herdName}}:{{$index}}
-                                    <span class="badge">{{herd.animals.length}}</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-xs-2 col-md-2">
-
-                        <div class="panel panel-info">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">
-                                    {{farmer.herds[selHerd.item].animals.length}} Animals</h3>
-                            </div>
-                            <ul class="list-group">
-                                <li ng-repeat="animal in farmer.herds[selHerd.item].animals" class="list-group-item">{{animal.tagID}}
-                                <a class="btn btn-xs btn-danger pull-right" ng-click="delAnimal($index)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-2">
-                        <input name="herdName" type="text" data-ng-model="newHerdName"
-                               id="herdName"
+                    <div class="controls">
+                        <input name="firstName" type="text" data-ng-model="farmer.firstName" id="firstName"
                                class="form-control"
-                               placeholder="New Herd Name">
+                               placeholder="First Name" required>
+                    </div>
+                </div>
+                <div class="col-xs-3 col-md-3">
+                    <label class="control-label" for="lastName">Last Name</label>
 
-                        <div class="btn btn-success form-control" ng-disabled="!newHerdName.length>0"
-                             style="margin-top: 10px" ng-click="addHerd()">Add Herd...
+                    <div class="controls">
+                        <input name="lastName" type="text" data-ng-model="farmer.lastName" id="lastName"
+                               class="form-control"
+                               placeholder="Last Name" required>
+                    </div>
+
+                </div>
+            </div>
+            <br>
+
+            <div class="row">
+                <div class="col-xs-2 col-md-2">
+
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                {{farmer.herds.length}} Herds</h3>
                         </div>
+                        <ul class="list-group">
+                            <li ng-repeat="herd in farmer.herds" ng-class="{'active': selHerd.item==$index}"
+                                ng-click="selHerd.item = $index"
+                                class="list-group-item">{{herd.herdName}}
+                                <span class="badge">{{herd.animals.length}}</span></li>
+                        </ul>
                     </div>
-                    <div class="col-xs-2">
-                        <input name="animalTagID" type="text" data-ng-model="newTagID" class="form-control" placeholder="New Animal TagID">
-
-                        <div class="btn btn-success form-control" ng-disabled="!newTagID.length>0"
-                             style="margin-top: 10px" ng-click="addAnimal()">Add Animal...
+                </div>
+                <div class="col-xs-2 col-md-2">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                {{farmer.herds[selHerd.item].animals.length}} Animals</h3>
                         </div>
+                        <ul class="list-group">
+                            <li ng-repeat="animal in farmer.herds[selHerd.item].animals"
+                                ng-class="{'active': selAnimal.item==$index}" ng-click="selAnimal.item = $index"
+                                class="list-group-item">
+                                {{animal.tagID}}
+                                <a class="btn btn-xs btn-danger pull-right" ng-click="delAnimal($index)"><span
+                                        class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
+                <div class="col-xs-3 col-md-3">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                {{farmer.herds[selHerd.item].animals[selAnimal.item].weights.length}} Weigh Pts</h3>
+                        </div>
+                        <ul class="list-group" style="height:150px; overflow-y:auto;">
+                            <li ng-repeat="weightPt in farmer.herds[selHerd.item].animals[selAnimal.item].weights | orderBy:'-taken'"
+                                class="list-group-item">
+                                <strong>{{weightPt.taken | date: 'shortDate' }}</strong><span style="float:right;">&nbsp;{{weightPt.weight}}kgs</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xs-3 col-md-3">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                {{farmer.herds[selHerd.item].animals[selAnimal.item].feeds.length}} Temp Pts</h3>
+                        </div>
+                        <ul class="list-group" style="height:150px; overflow-y:auto;">
+                            <li ng-repeat="tempPt in farmer.herds[selHerd.item].animals[selAnimal.item].feeds | orderBy:'-taken'"
+                                class="list-group-item">
+                                <!--<strong>{{tempPt.taken | date: 'shortDate' }}</strong>&nbsp;{{tempPt.temp}}&nbsp;F-->
+                                <strong>{{tempPt.taken | date: 'shortDate'}}</strong>
+                                    <span style="float:right;">{{tempPt.qty}}kgs</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2">
+                    <input name="herdName" type="text" data-ng-model="newHerdName"
+                           id="herdName"
+                           class="form-control"
+                           placeholder="New Herd Name">
 
-                <br>
-                <div class="row">
-                    <div class="col-xs-2">
-                        <input type="submit" value="Update" class="btn btn-primary">
-                    </div>
-                    <div class="col-xs-2">
-                        <a ui-sref="farmers.list" class="btn btn-default">Cancel</a>
+                    <div class="btn btn-success form-control" ng-disabled="!newHerdName.length>0"
+                         style="margin-top: 10px" ng-click="addHerd()">Add Herd...
                     </div>
                 </div>
-                <div data-ng-show="error" class="text-danger">
-                    <strong data-ng-bind="error"></strong>
+                <div class="col-xs-2">
+                    <input name="animalTagID" type="text" data-ng-model="newTagID" class="form-control"
+                           placeholder="New Animal TagID">
+
+                    <div class="btn btn-success form-control" ng-disabled="!newTagID.length>0"
+                         style="margin-top: 10px" ng-click="addAnimal()">Add Animal...
+                    </div>
                 </div>
+                <div class="col-xs-6">
+                    <div class="btn btn-success form-control"
+                         style="margin-top:45px" ng-click="genDataPts()">Collect Data Pts
+                    </div>
+                </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+                <div class="col-xs-2">
+                    <input type="submit" value="Update" class="btn btn-primary">
+                </div>
+                <div class="col-xs-2">
+                    <a ui-sref="farmers.view({farmerId: farmer._id})" class="btn btn-default">Cancel</a>
+                </div>
+            </div>
+            <div data-ng-show="error" class="text-danger">
+                <strong data-ng-bind="error"></strong>
+            </div>
         </form>
     </div>
 </section>

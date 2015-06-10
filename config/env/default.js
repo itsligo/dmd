@@ -2,7 +2,7 @@
 
 module.exports = {
 	app: {
-		title: 'MEAN.JS 0.4.0',
+		title: 'DMD 0.4.0',
 		description: 'Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js',
 		keywords: 'mongodb, express, angularjs, node.js, mongoose, passport',
 		googleAnalyticsTrackingID: process.env.GOOGLE_ANALYTICS_TRACKING_ID || 'GOOGLE_ANALYTICS_TRACKING_ID'

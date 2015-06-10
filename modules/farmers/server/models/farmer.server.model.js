@@ -19,11 +19,11 @@ var WeightSchema = new Schema({
     }
 });
 
-var TempSchema = new Schema({
+var FeedSchema = new Schema({
     taken: {
         type: Date
     },
-    temp: {
+    qty: {
         type: Number
     }
 });
@@ -34,8 +34,11 @@ var AnimalSchema = new Schema({
         type: String,
         trim: true
     },
+    dob: {
+        type: Date
+    },
     weights: [WeightSchema],
-    temps: [TempSchema]
+    feeds: [FeedSchema]
 });
 
 var HerdSchema = new Schema({

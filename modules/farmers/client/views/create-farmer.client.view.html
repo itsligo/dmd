@@ -34,25 +34,10 @@
 
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-2">
-                    <button class="btn btn-success" ng-click="addHerd()">Add Herd</button>
-                </div>
-            </div>
-            <div class="row" ng-repeat="herd in herds">
-                <label class="control-label" for="herdName"> Herd Name></label>
-
-                <div class="controls">
-                    <input name="herdName" type="text" data-ng-model="herd.herdName" id="herdName"
-                           class="form-control"
-                           placeholder="Herd Name">
-                </div>
-
-            </div>
 
             <div class="row">
-                <div class="col-xs-2">
-                    <input type="submit" value="Update" class="btn btn-default">
+                <div class="col-xs-2" style="margin-top: 10px;">
+                    <input type="submit" value="Update" class="btn btn-success btn-block">
                 </div>
             </div>
             <div data-ng-show="error" class="text-danger">

@@ -14,7 +14,10 @@ module.exports = {
 				'public/lib/angular-ui-router/release/angular-ui-router.js',
 				'public/lib/angular-ui-utils/ui-utils.js',
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
-				'public/lib/angular-file-upload/angular-file-upload.js'
+				'public/lib/angular-file-upload/angular-file-upload.js',
+				'public/lib/angular-locale_en-ie.js',
+				'public/lib/Chart.js/Chart.js',
+				'public/lib/tc-angular-chartjs/dist/tc-angular-chartjs.js'
 			],
 			tests: ['public/lib/angular-mocks/angular-mocks.js']
 		},
