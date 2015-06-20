@@ -37,3 +37,11 @@ The work herein contained is subject to copyright IT Sligo / John Kelleher, save
 * bower install all key components
 * angular-ui-utils breaks dropdown so add data attributes for dropdown and dropdown-toggle rather than classes in header.client.view.html
 * 
+
+### Debugging in Webstorm
+
+* Run Grunt (default) task in console
+* Ensure Webstorm debug plugin in place for Chrome/Firefox
+* Create Edit Configuration for Javascript and run to catch breakpoints
+* Use ps -ax | grep node to identify if port is in use if get EADDRINUSE error shows and kill -9 portNumber to kill
+* Or stop Run processes in WebStorm

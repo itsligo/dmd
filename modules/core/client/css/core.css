@@ -1,3 +1,14 @@
+html {
+    background-color: #f3f3f4;
+}
+body {
+    font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color: #2f4050;
+    font-size: 13px;
+    color: #676a6c;
+    overflow-x: hidden;
+}
+
 .content {
     margin-top: 50px;
     background-color: #f3f3f4;
@@ -37,8 +48,25 @@ a:hover .header-profile-image {
     padding-bottom: 11px !important;
 }
 
+/* Over-rides daterangepicker-bs3.css style to fix narrow width of input for custom dates */
+.daterangepicker .ranges .input-mini {
+    padding: 0 4px;
+}
+/* end daterangepicker fix */
+
 /* WIDGETS */
 /* WIDGETS */
+
+.footer {
+    background: none repeat scroll 0 0 white;
+    border-top: 1px solid #e7eaec;
+    bottom: 0;
+    left: 0;
+    padding: 10px 20px;
+    position: absolute;
+    right: 0;
+}
+
 .widget {
     border-radius: 5px;
     padding: 10px 20px 5px 20px;
@@ -63,7 +91,7 @@ a:hover .header-profile-image {
 }
 
 .widget-head-color-box {
-    border-radius: 5px 5px 0px 0px;
+    border-radius: 5px 5px 0 0;
     margin-top: 10px;
 }
 
@@ -143,10 +171,6 @@ a:hover .header-profile-image {
 .geo-statistic h1 {
     font-size: 36px;
     margin-bottom: 0;
-}
-
-.glyphicon.fa {
-    font-family: "FontAwesome";
 }
 
 /* COLORS & BACKGROUND */
@@ -254,7 +278,7 @@ a:hover .header-profile-image {
 .progress-mini,
 .progress-mini .progress-bar {
     height: 5px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 .progress-bar-navy-light {
@@ -309,6 +333,7 @@ a:hover .header-profile-image {
     -moz-border-right-colors: none;
     -moz-border-top-colors: none;
     background: none;
+    border-color: #dddddd;
     border-color: #dddddd #dddddd rgba(0, 0, 0, 0);
     border-bottom: #f3f3f4;
     border-image: none;
@@ -336,36 +361,10 @@ a:hover .header-profile-image {
 }
 
 .ui-tab .tab-content {
-    padding: 20px 0px;
+    padding: 20px 0;
 }
 
-/* ChartJS View Styles Custom */
-#wrapper {
-    width: 100%;
-    overflow-x: hidden;
-}
 
-.wrapper {
-    padding: 0 20px;
-}
-
-.wrapper-content {
-    padding: 20px 0px 0px;
-}
-
-#page-wrapper {
-    padding: 0 15px;
-    min-height: 568px;
-    position: relative !important;
-}
-
-@media (min-width: 768px) {
-    #page-wrapper {
-        position: inherit;
-        margin: 0 0 0 240px;
-        min-height: 1000px;
-    }
-}
 
 .ibox {
     clear: both;
@@ -388,7 +387,7 @@ a:hover .header-profile-image {
     border-color: #e7eaec;
     border-image: none;
     border-style: solid solid none;
-    border-width: 4px 0px 0;
+    border-width: 4px 0 0;
     color: inherit;
     margin-bottom: 0;
     padding: 14px 15px 7px;
@@ -402,17 +401,23 @@ a:hover .header-profile-image {
     border-color: #e7eaec;
     border-image: none;
     border-style: solid solid none;
-    border-width: 1px 0px;
+    border-width: 1px 0;
 }
 
 .float-e-margins .btn {
     margin-bottom: 5px;
 }
 
+/* GLOBALS */
+.no-margins {
+    margin: 0 !important;
+}
+
+
 /*////////////// tc-chartjs //////////////*/
 .tc-chart-js-legend {
     list-style-type: none;
-    padding-left: 0px;
+    padding-left: 0;
 }
 
 .tc-chart-js-legend li {
@@ -428,4 +433,9 @@ a:hover .header-profile-image {
     display: block;
     float: left;
     margin-right: 5px;
+}
+
+/*////////////// ng-table additional styling //////////////*/
+.ng-table tr .active {
+    background-color: #00008B;
 }

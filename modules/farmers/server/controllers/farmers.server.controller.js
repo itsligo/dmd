@@ -98,3 +98,7 @@ exports.farmerByID = function(req, res, next, id) {
 		next();
 	});
 };
+
+/**
+ * Charting Queries
+ */

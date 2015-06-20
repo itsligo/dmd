@@ -1,6 +1,9 @@
 <section data-ng-controller="FarmersController" data-ng-init="findOne()">
 
     <div class="row">
+        <div class="col-md-12"><h1>{{farmer.firstName}} {{farmer.lastName}}</h1></div>
+    </div>
+    <div class="row">
         <div class="col-md-3">
             <div class="widget style1 blue-bg">
                 <div class="row">
@@ -61,78 +64,122 @@
 
     <div class="row">
         <div class="wrapper wrapper-content">
-            <div class="col-xs-12 col-sm-12 col-md-6">
+            <div class="col-xs-12 col-sm-12 col-md-7">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>Line Chart Example
-                            <small>With custom colors.</small>
+                        <h5>Weight Gain
+                            <small>for selected group</small>
                         </h5>
                         <div ibox-tools=""></div>
                     </div>
                     <div class="ibox-content">
                         <div>
-                            <canvas tc-chartjs-line chart-options="options" chart-data="data" auto-legend></canvas>
+                            <canvas tc-chartjs-line chart-options="options" chart-data="graphData" auto-legend></canvas>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-12 col-md-6">
+            <div class="col-xs-12 col-sm-12 col-md-5">
+
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Choose Group {{viewAllHerds}}**{{viewHerd}}
+                            <span>
+                                <div class="btn-group" style="margin-top: -18px; float: right">
+                                    <button type="button" ng-click="viewAllHerds=true; viewHerd=false; genChart(0, 0);" class="btn btn-default"
+                                            ng-class="{'btn-primary': viewAllHerds}">All
+                                    </button>
+                                    <button ng-repeat="hrd in farmer.herds" type="button" ng-click="$parent.viewAllHerds=false; $parent.viewHerd=$index; genChart(viewHerd,viewAnimal);"
+                                            class="btn btn-default" ng-class="{'btn-primary': viewHerd==$index && viewAllHerds==false}">
+                                        {{hrd.herdName | limitTo:4}} {{$index}}
+                                    </button>
+                                </div>
+                                </span>
+                        </h5>
+                        </h5>
+                    </div>
+                </div>
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Date Range
+                            <small>Restrict data to...</small>
+                            <span class="pull-right" style="margin-top:-19px; margin-right:10px">
+                            <input date-range-picker class="form-control date-picker" style="width:105%" type="text"
+                                   ng-model="date"
+                                   options="drpOpts"/>
+                        </span>
+                        </h5>
+                    </div>
+                </div>
                 <div class="ibox float-e-margins">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
-                            <h5>Hover Table
-                                <small>List of data points.</small>
+                            <h5>Animals
+                                <small>from <span ng-show="viewHerd==-1">all groups</span><span ng-show="viewHerd!=-1">group {{farmer.herds[viewHerd].herdName}}</span>.
+                                </small>
                             </h5>
-                            <div class="ibox-tools">
-                                <a class="collapse-link binded">
-                                    <i class="fa fa-chevron-up"></i>
-                                </a>
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    <i class="fa fa-wrench"></i>
-                                </a>
-                                <ul class="dropdown-menu dropdown-user">
-                                    <li><a href="#">Config option 1</a>
-                                    </li>
-                                    <li><a href="#">Config option 2</a>
-                                    </li>
-                                </ul>
-                                <a class="close-link binded">
-                                    <i class="fa fa-times"></i>
-                                </a>
-                            </div>
                         </div>
                         <div class="ibox-content">
+                            <div ng-hide="viewAllHerds">            <!-- showing viewHerd, all animals !-->
+                                <table ng-table class="table">
+                                    <tr ng-repeat="beast in farmer.herds[viewHerd].animals" style="cursor: pointer;"
+                                        ng-click="genChart(viewHerd,$index)" ng-class="{active: viewAnimal==$index}">
+                                        <td data-title="'tag ID'">{{beast.tagID}} [{{viewAnimal}}][{{$index}}]</td>
+                                        <td data-title="'dob'">{{beast.dob | date: 'shortDate' }}</td>
+                                        <td data-title="'sex'"><span class="pull-right badge badge-xs">{{beast.sex}}</span></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div ng-show="viewAllHerds">            <!-- showing all herds, all animals !-->
+                                <div ng-repeat="hrd in farmer.herds">
+                                    <table ng-table class="table">
+                                        <tr ng-repeat="beast in hrd.animals" style="cursor: pointer"
+                                            ng-click="genChart($parent.$index,$index)" ng-class="{active: viewAnimal==$index && viewHerd==$parent.$index}">
+                                            <td data-title="'tag ID'">{{beast.tagID}} [{{viewAnimal}}][{{$index}}]</td>
+                                            <td data-title="'dob'">{{beast.dob | date: 'shortDate' }}</td>
+                                            <td data-title="'sex'"><span
+                                                    class="pull-right badge badge-xs">{{beast.sex}}</span></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            Herd:{{viewHerd}}
+                            Animal:{{viewAnimal}}
 
-                            <table class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Data</th>
-                                    <th>User</th>
-                                    <th>Value</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>
-                                        <div style="width:200px; height:5px;">
-                                            <canvas height="25" width="100" tc-chartjs-line chart-options="sparkOptions" chart-data="data"></canvas>
-                                        </div>
-                                    </td>
-                                    <td>Samantha</td>
-                                    <td class="text-navy"> <i class="fa fa-level-up"></i> 40% </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td><div style="width:200px; height:5px;">
-                                        <canvas height="25" width="100" tc-chartjs-line chart-options="sparkOptions" chart-data="data"></canvas>
-                                    </div></td>
-                                    <td>Jacob</td>
-                                    <td class="text-warning"> <i class="fa fa-level-down"></i> -20% </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <!--<table class="table table-hover no-margins">-->
+                            <!--<thead>-->
+                            <!--<tr>-->
+                            <!--<th>#</th>-->
+                            <!--<th>Data</th>-->
+                            <!--<th>User</th>-->
+                            <!--<th>Value</th>-->
+                            <!--</tr>-->
+                            <!--</thead>-->
+                            <!--<tbody>-->
+                            <!--<tr>-->
+                            <!--<td>1</td>-->
+                            <!--<td>-->
+                            <!--<div style="width:200px; height:5px;">-->
+                            <!--<canvas height="25" width="100" tc-chartjs-line chart-options="sparkOptions"-->
+                            <!--chart-data="data"></canvas>-->
+                            <!--</div>-->
+                            <!--</td>-->
+                            <!--<td>Samantha</td>-->
+                            <!--<td class="text-navy"><i class="fa fa-level-up"></i> 40%</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>2</td>-->
+                            <!--<td>-->
+                            <!--<div style="width:200px; height:5px;">-->
+                            <!--<canvas height="25" width="100" tc-chartjs-bar chart-options="sparkOptions"-->
+                            <!--chart-data="data"></canvas>-->
+                            <!--</div>-->
+                            <!--</td>-->
+                            <!--<td>Jacob</td>-->
+                            <!--<td class="text-warning"><i class="fa fa-level-down"></i> -20%</td>-->
+                            <!--</tr>-->
+                            <!--</tbody>-->
+                            <!--</table>-->
                         </div>
                     </div>
                 </div>
@@ -140,11 +187,6 @@
         </div>
     </div>
 
-    <br/>
-
-    <div class="page-header">
-        <h1>Viewing&nbsp;<span data-ng-bind="farmer.firstName"></span></h1>
-    </div>
     <div class="pull-right" data-ng-show="authentication.user._id == farmer.user._id">
         <a class="btn btn-primary" data-ui-sref="farmers.edit({farmerId: farmer._id})">
             <i class="glyphicon glyphicon-edit"></i>
@@ -153,6 +195,7 @@
             <i class="glyphicon glyphicon-trash"></i>
         </a>
     </div>
+
     <small>
         <em class="text-muted">
             Posted on
@@ -161,16 +204,4 @@
             <span data-ng-bind="farmer.user.displayName"></span>
         </em>
     </small>
-    <div>Farmer ID:</div>
-    <h5 class="list-group-item-heading" data-ng-bind="farmer._id"></h5>
-    <h4>
-        <span class="list-group-item-heading" data-ng-bind="farmer.title"></span>
-        <span class="list-group-item-text" data-ng-bind="farmer.firstName"></span><span>&nbsp;</span><span
-            class="list-group-item-text" data-ng-bind="farmer.lastName"></span>
-    </h4>
-    <h4>No. Herds: {{farmer.herds.length}}</h4>
-
-    <div ng-repeat="hrd in farmer.herds">
-        <p>Herds: {{hrd.herdName}},</p>
-    </div>
-</section>
+    </section>

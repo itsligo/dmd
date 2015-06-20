@@ -3,6 +3,7 @@
 // Configuring the Articles module
 angular.module('farmers').run(['Menus',
 	function(Menus) {
+
 		// Add the farmers dropdown item
 		Menus.addMenuItem('topbar', {
 			title: 'Farmers',

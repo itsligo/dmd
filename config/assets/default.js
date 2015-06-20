@@ -5,7 +5,10 @@ module.exports = {
 		lib: {
 			css: [
 				'public/lib/bootstrap/dist/css/bootstrap.css',
-				'public/lib/bootstrap/dist/css/bootstrap-theme.css'
+				//'public/lib/bootstrap/dist/css/bootstrap-theme.css',
+				'public/lib/bootstrap-daterangepicker/daterangepicker-bs3.css',
+				'public/lib/ng-table/dist/ng-table.css',
+				'http://fonts.googleapis.com/css?family=Open+Sans'
 			],
 			js: [
 				'public/lib/angular/angular.js',
@@ -17,7 +20,15 @@ module.exports = {
 				'public/lib/angular-file-upload/angular-file-upload.js',
 				'public/lib/angular-locale_en-ie.js',
 				'public/lib/Chart.js/Chart.js',
-				'public/lib/tc-angular-chartjs/dist/tc-angular-chartjs.js'
+				'public/lib/tc-angular-chartjs/dist/tc-angular-chartjs.js',
+				'public/lib/jquery/dist/jquery.js',
+				'public/lib/bootstrap/dist/js/bootstrap.js',
+				'public/lib/moment/moment.js',
+				'public/lib/moment/locale/en-gb.js',
+				'public/lib/bootstrap-daterangepicker/daterangepicker.js',
+				'public/lib/angular-daterangepicker/js/angular-daterangepicker.js',
+				'public/lib/lodash/lodash.min.js',
+				'public/lib/ng-table/dist/ng-table.js'
 			],
 			tests: ['public/lib/angular-mocks/angular-mocks.js']
 		},

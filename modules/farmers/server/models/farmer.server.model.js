@@ -20,11 +20,14 @@ var WeightSchema = new Schema({
 });
 
 var FeedSchema = new Schema({
-    taken: {
+    changed: {
         type: Date
     },
     qty: {
         type: Number
+    },
+    food: {
+        type: String
     }
 });
 
@@ -37,8 +40,11 @@ var AnimalSchema = new Schema({
     dob: {
         type: Date
     },
-    weights: [WeightSchema],
-    feeds: [FeedSchema]
+    sex: {
+        type: String,
+        enum: ['M', 'F']
+    },
+    weights: [WeightSchema]
 });
 
 var HerdSchema = new Schema({
@@ -46,7 +52,8 @@ var HerdSchema = new Schema({
         type: String,
         trim: true
     },
-    animals : [AnimalSchema]
+    animals: [AnimalSchema],
+    feeds: [FeedSchema]
 });
 
 /**
