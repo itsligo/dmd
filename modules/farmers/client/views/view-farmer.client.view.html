@@ -80,7 +80,6 @@
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-5">
-
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5>Choose Group {{viewAllHerds}}**{{viewHerd}}
@@ -183,6 +182,28 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    herdADWG: {{herdADWG[viewHerd][0]}}<br/>
+    herdADWG: {{herdADWG[viewHerd][1]}}<br/>
+    herdADWG: {{herdADWG[viewHerd][2]}}<br/>
+    herdADWG: {{herdADWG[viewHerd][3]}}<br/>
+    herdADWG: {{herdADWG[viewHerd][4]}}<br/>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="table table-striped">
+                <tr>
+                    <td>ADWG Date</td>
+                    <td>ADWG</td>
+                </tr>
+                <tr ng-repeat="a in herdADWG[viewHerd]">
+                    {{a}}
+                    <td>{{a.dte}}</td>
+                    <td>{{a.adwg}}</td>
+                </tr>
+
             </div>
         </div>
     </div>

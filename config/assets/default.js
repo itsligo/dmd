@@ -24,7 +24,7 @@ module.exports = {
 				'public/lib/jquery/dist/jquery.js',
 				'public/lib/bootstrap/dist/js/bootstrap.js',
 				'public/lib/moment/moment.js',
-				'public/lib/moment/locale/en-gb.js',
+				'public/lib/moment/locale/en-ie.js',		// Note necessary for proper IE date handling
 				'public/lib/bootstrap-daterangepicker/daterangepicker.js',
 				'public/lib/angular-daterangepicker/js/angular-daterangepicker.js',
 				'public/lib/lodash/lodash.min.js',
