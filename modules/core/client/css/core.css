@@ -57,15 +57,28 @@ a:hover .header-profile-image {
 /* WIDGETS */
 /* WIDGETS */
 
-.footer {
-    background: none repeat scroll 0 0 white;
-    border-top: 1px solid #e7eaec;
-    bottom: 0;
-    left: 0;
-    padding: 10px 20px;
-    position: absolute;
-    right: 0;
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
 }
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 25px;
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 25px;
+    background-color: lightsteelblue;
+    border-top: 1px solid #e7eaec;
+    padding: 5px 20px;
+}
+/* END Sticky footer styles
+-------------------------------------------------- */
 
 .widget {
     border-radius: 5px;

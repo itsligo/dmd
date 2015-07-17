@@ -1,32 +1,49 @@
 <section data-ng-controller="FarmersController" ng-init="find()">
-    <div class="page-header">
-        <h1>farmers</h1>
+    <div class="row">
+        <div class="col-md-12"><h1><span><strong>client</strong></span> list</h1></div>
     </div>
-    <div class="list-group">
-        <a ng-repeat="farmer in farmers" data-ui-sref="farmers.view({farmerId: farmer._id})"
-           class="list-group-item">
-            <small class="list-group-item-text">
-                Posted on
-                <span data-ng-bind="farmer.created | date:'mediumDate'"></span>
-                by
-                <span data-ng-bind="farmer.user.displayName"></span>
-                (User Id: <span data-ng-bind="farmer.user._id"></span>)
-            </small>
-            <div>Farmer ID:</div>
-            <h5 class="list-group-item-heading" data-ng-bind="farmer._id"></h5>
-            <h4>
-                <span class="list-group-item-heading" data-ng-bind="farmer.title"></span>
-                <span class="list-group-item-text" data-ng-bind="farmer.firstName"></span><span>&nbsp;</span><span
-                    class="list-group-item-text" data-ng-bind="farmer.lastName"></span>
-            </h4>
-
-
-            <div ng-repeat="hrd in farmer.herds">
-                <p>Herds: {{hrd.herdName}}</p>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="list-group">
+                <a ng-repeat="farmer in farmers" data-ui-sref="farmers.view({farmerId: farmer._id})"
+                   class="list-group-item">
+                    <!--<small class="list-group-item-text">-->
+                        <!--Posted on-->
+                        <!--<span data-ng-bind="farmer.created | date:'mediumDate'"></span>-->
+                        <!--by-->
+                        <!--<span data-ng-bind="farmer.user.displayName"></span>-->
+                        <!--(User Id: <span data-ng-bind="farmer.user._id"></span>)-->
+                    <!--</small>-->
+                    <div class="row">
+                        <div class="col-md-2">
+                            <span class="glyphicon glyphicon-user" aria-hidden="true" style="font-size:3.3em; margin-top:12px; color:#dca7a7"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <h4>
+                                <span class="list-group-item-heading">{{farmer.title}}</span>
+                                <span class="list-group-item-text">{{farmer.firstName}}</span><span>&nbsp;</span><span
+                                    class="list-group-item-text" data-ng-bind="farmer.lastName"></span>
+                            </h4>
+                            <small style="margin-top: -25px">{{farmer.address1}}, {{farmer.address2}}, {{farmer.town}}</small>
+                        </div>
+                        <div class="col-md-3">
+                            <div style="margin-top: 15px;">
+                                <p ng-show="farmer.herds.length!=0">{{farmer.herds.length}} Herds</p>
+                                <p ng-show="farmer.herds.length==0">No Herds</p>
+                            </div>
+                            <div ng-show="farmer.herds.length!=0">
+                                <h5>{{farmer.herds[0].animals.length+farmer.herds[1].animals.length+farmer.herds[2].animals.length}}&nbsp;Animals</h5>
+                            </div>
+                        </div>
+                    </div>
+                </a>
             </div>
-        </a>
-    </div>
-    <div class="alert alert-warning text-center" data-ng-if="farmers.$resolved && !farmers.length">
-        No farmers yet, why don't you <a data-ui-sref="farmers.create">create one</a>?
+            <div class="alert alert-warning text-center" data-ng-if="farmers.$resolved && !farmers.length">
+                No farmers yet, why don't you <a data-ui-sref="farmers.create">create one</a>?
+            </div>
+        </div>
+        <div class="col-xs-2">
+            <a ui-sref="farmers.create" class="btn btn-success">Create New Farmer...</a>
+        </div>
     </div>
 </section>

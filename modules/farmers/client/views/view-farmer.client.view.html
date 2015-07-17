@@ -1,19 +1,33 @@
 <section data-ng-controller="FarmersController" data-ng-init="findOne()">
 
     <div class="row">
-        <div class="col-md-12"><h1>{{farmer.firstName}} {{farmer.lastName}}</h1></div>
+        <div class="col-md-11">
+            <h1>{{farmer.firstName}} {{farmer.lastName}}
+            <span><h5>{{farmer.address1}}, {{farmer.address2}}, {{farmer.town}}.</h5></span></h1>
+        </div>
+        <div class="col-md-1">
+            <a style="margin-top:25px" class="btn btn-warning btn-sm" ui-sref="farmers.list()"><i class="glyphicon glyphicon-list">&nbsp;</i>Back to List</a>
+        </div>
     </div>
-    <div class="row">
+    <div class="row" ng-hide="graphData.datasets[0].data!=undefined">
+        <div class="well">
+            <h2 class="text-center">No Animal Data Entered</h2>
+            <h5 class="text-center"><span><a class="btn btn-primary" data-ui-sref="farmers.edit({farmerId: farmer._id})">
+                <i class="glyphicon glyphicon-edit"></i>
+            </a></span> to add animal and feed data</h5>
+        </div>
+    </div>
+    <div class="row" ng-if="graphData.datasets[0].data!=undefined">
         <div class="col-md-3">
             <div class="widget style1 blue-bg">
                 <div class="row">
                     <div class="col-xs-4 text-center">
-                        <i style="font-size:3.7em;" class="glyphicon glyphicon-cloud"></i>
+                        <!--<i style="font-size:3.7em;" class="glyphicon glyphicon-cloud"></i>-->
+                        <img height="80" style="margin-bottom: -9px" src="modules/core/img/brand/cow_white.png" />
                     </div>
                     <div class="col-xs-8 text-right">
-                        <span> Today income </span>
-
-                        <h2 class="font-bold">$ 4,232</h2>
+                        <span>Animal Avg Daily Wght Gain/Loss</span>
+                        <h2 class="font-bold">{{stat1}}<span style="font-size: 0.5em">&nbsp;kg/day</span></h2>
                     </div>
                 </div>
             </div>
@@ -22,12 +36,11 @@
             <div class="widget style1 navy-bg">
                 <div class="row">
                     <div class="col-xs-4">
-                        <i style="font-size:3.7em;" class="glyphicon glyphicon-home"></i>
+                        <img height="80" style="margin-bottom: -9px" src="modules/core/img/brand/cows_white.png" />
                     </div>
                     <div class="col-xs-8 text-right">
-                        <span> Today degrees </span>
-
-                        <h2 class="font-bold">26'C</h2>
+                        <span>Group Avg Wght Gain/Loss </span>
+                        <h2 class="font-bold">{{stat2}}<span style="font-size: 0.5em">&nbsp;kg/day</span></h2>
                     </div>
                 </div>
             </div>
@@ -36,12 +49,12 @@
             <div class="widget style1 lazur-bg">
                 <div class="row">
                     <div class="col-xs-4">
-                        <i style="font-size:3.7em;" class="glyphicon glyphicon-wrench"></i>
+                        <img height="80" style="margin-bottom: -9px" src="modules/core/img/brand/chart_up_white.png" />
                     </div>
                     <div class="col-xs-8 text-right">
-                        <span> New messages </span>
-
-                        <h2 class="font-bold">260</h2>
+                        <span>Max Weight Gain/Loss</span>
+                        <span>across Herd</span>
+                        <h2 class="font-bold">{{stat3}}<span style="font-size: 0.5em">&nbsp;kg/day</span></h2>
                     </div>
                 </div>
             </div>
@@ -50,19 +63,18 @@
             <div class="widget style1 yellow-bg">
                 <div class="row">
                     <div class="col-xs-4">
-                        <i style="font-size:3.7em;" class="glyphicon glyphicon-phone"></i>
+                        <img height="80" style="margin-bottom: -9px" src="modules/core/img/brand/feed_white.png" />
                     </div>
                     <div class="col-xs-8 text-right">
-                        <span> New albums </span>
-
-                        <h2 class="font-bold">12</h2>
+                        <span>Avg Feed/Day for Group</span>
+                        <h2 class="font-bold">{{stat4}}<span style="font-size: 0.5em">&nbsp;kg/day</span></h2>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" ng-if="graphData.datasets[0].data!=undefined">
         <div class="wrapper wrapper-content">
             <div class="col-xs-12 col-sm-12 col-md-7">
                 <div class="ibox float-e-margins">
@@ -78,19 +90,34 @@
                         </div>
                     </div>
                 </div>
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Feed changes
+                            <small>for selected group</small>
+                        </h5>
+                        <div ibox-tools=""></div>
+                    </div>
+                    <div class="ibox-content">
+                        <div>
+                            <canvas tc-chartjs-bar chart-options="feedOptions" chart-data="graphFeedData" auto-legend height="60"></canvas>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-5">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>Choose Group {{viewAllHerds}}**{{viewHerd}}
+                        <h5>Choose Group
                             <span>
                                 <div class="btn-group" style="margin-top: -18px; float: right">
-                                    <button type="button" ng-click="viewAllHerds=true; viewHerd=false; genChart(0, 0);" class="btn btn-default"
+                                    <button type="button" ng-click="viewAllHerds=true; viewHerd=-1; genChart(0, 0);" class="btn btn-default"
                                             ng-class="{'btn-primary': viewAllHerds}">All
                                     </button>
-                                    <button ng-repeat="hrd in farmer.herds" type="button" ng-click="$parent.viewAllHerds=false; $parent.viewHerd=$index; genChart(viewHerd,viewAnimal);"
+
+                                    <button ng-repeat="hrd in farmer.herds" type="button" ng-disabled="hrd.animals.length===0"
+                                            ng-click="$parent.viewAllHerds=false; $parent.viewHerd=$index; genChart(viewHerd,viewAnimal);"
                                             class="btn btn-default" ng-class="{'btn-primary': viewHerd==$index && viewAllHerds==false}">
-                                        {{hrd.herdName | limitTo:4}} {{$index}}
+                                        {{hrd.herdName | limitTo:4}}
                                     </button>
                                 </div>
                                 </span>
@@ -123,7 +150,7 @@
                                 <table ng-table class="table">
                                     <tr ng-repeat="beast in farmer.herds[viewHerd].animals" style="cursor: pointer;"
                                         ng-click="genChart(viewHerd,$index)" ng-class="{active: viewAnimal==$index}">
-                                        <td data-title="'tag ID'">{{beast.tagID}} [{{viewAnimal}}][{{$index}}]</td>
+                                        <td data-title="'tag ID'">{{beast.tagID}}</td>
                                         <td data-title="'dob'">{{beast.dob | date: 'shortDate' }}</td>
                                         <td data-title="'sex'"><span class="pull-right badge badge-xs">{{beast.sex}}</span></td>
                                     </tr>
@@ -131,10 +158,10 @@
                             </div>
                             <div ng-show="viewAllHerds">            <!-- showing all herds, all animals !-->
                                 <div ng-repeat="hrd in farmer.herds">
-                                    <table ng-table class="table">
+                                    <table ng-table class="table" ng-hide="hrd.animals.length==0">
                                         <tr ng-repeat="beast in hrd.animals" style="cursor: pointer"
                                             ng-click="genChart($parent.$index,$index)" ng-class="{active: viewAnimal==$index && viewHerd==$parent.$index}">
-                                            <td data-title="'tag ID'">{{beast.tagID}} [{{viewAnimal}}][{{$index}}]</td>
+                                            <td data-title="'tag ID'">{{beast.tagID}} </td>
                                             <td data-title="'dob'">{{beast.dob | date: 'shortDate' }}</td>
                                             <td data-title="'sex'"><span
                                                     class="pull-right badge badge-xs">{{beast.sex}}</span></td>
@@ -142,8 +169,8 @@
                                     </table>
                                 </div>
                             </div>
-                            Herd:{{viewHerd}}
-                            Animal:{{viewAnimal}}
+                            <!--Herd:{{viewHerd}}-->
+                            <!--Animal:{{viewAnimal}}-->
 
                             <!--<table class="table table-hover no-margins">-->
                             <!--<thead>-->
@@ -186,7 +213,7 @@
         </div>
     </div>
 
-    herdADWG: {{herdADWG[viewHerd][0]}}<br/>
+   <!-- herdADWG: {{herdADWG[viewHerd][0]}}<br/>
     herdADWG: {{herdADWG[viewHerd][1]}}<br/>
     herdADWG: {{herdADWG[viewHerd][2]}}<br/>
     herdADWG: {{herdADWG[viewHerd][3]}}<br/>
@@ -207,7 +234,7 @@
             </div>
         </div>
     </div>
-
+-->
     <div class="pull-right" data-ng-show="authentication.user._id == farmer.user._id">
         <a class="btn btn-primary" data-ui-sref="farmers.edit({farmerId: farmer._id})">
             <i class="glyphicon glyphicon-edit"></i>

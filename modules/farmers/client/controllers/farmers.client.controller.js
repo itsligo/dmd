@@ -8,8 +8,13 @@ angular.module('farmers').controller('FarmersController', ['$scope', '$statePara
         $scope.selAnimal = {item: -1};
 
         $scope.viewAllHerds = true;
-        $scope.viewHerd;           // for viewing
-        $scope.viewAnimal;
+        $scope.viewHerd = -1;           // for viewing
+        $scope.viewAnimal = null;
+
+        $scope.stat1 = 3;
+        $scope.stat2 = 4;
+        $scope.stat3 = 5;
+        $scope.stat4 = 6;
 
         ////////////////////////////////////////////////////////////////////////////////////////
         ///////////// Date Range Picker
@@ -67,6 +72,7 @@ angular.module('farmers').controller('FarmersController', ['$scope', '$statePara
         var calcADWGPerHead = function () {
             var index, hIndex, aIndex, wIndex;
             var prevDate;
+            var peakADWG=0;
             herdStats = new Array($scope.farmer.herds.length);  // array of herds
             for (hIndex = 0; hIndex < $scope.farmer.herds.length; hIndex++) {   // for each Herd
                 herdStats[hIndex] = new Array($scope.farmer.herds[hIndex].animals.length);  // create array of animals
@@ -81,6 +87,7 @@ angular.module('farmers').controller('FarmersController', ['$scope', '$statePara
                             var adwg = Math.round((periodDelta / deltaDays)*100)/100;
                             // Push animal date & adwg to animal array in herd array
                             herdStats[hIndex][aIndex].push({dte: n.taken, adwg: adwg}); // record adwg intervals
+                            if (adwg>peakADWG) peakADWG = adwg;
                             //for (index = 0; index < deltaDays; index++) {   // build daily points array
                             //    animalADWG.push({dte: (prevDate.dte).add(1, 'days').toISOString(), adwg: adwg});
                             //};
@@ -89,9 +96,10 @@ angular.module('farmers').controller('FarmersController', ['$scope', '$statePara
                     }   // end weights loop
                     prevDate=false;
                 }   // end animal loop
+                $scope.stat3 = peakADWG;
                 // now loop each animal in herd
                 calcADWGAvgPerHerd(hIndex);
-            };   // end herd loop
+            }   // end herd loop
             $scope.genChart(0, 0);
         };
 
@@ -107,7 +115,7 @@ angular.module('farmers').controller('FarmersController', ['$scope', '$statePara
                 //    startingDate = new Date(herdStats[herdIdx][aIndex][0].dte);
                 if (herdStats[herdIdx][aIndex][0] && new Date(herdStats[herdIdx][aIndex][0].dte) < new Date(startingDate))
                     startingDate = herdStats[herdIdx][aIndex][0].dte;
-            };
+            }
             // next find adwg at startingDate (or next latest) for each animal, then average all readings
             // do following until no date > startingDate
             do  {
@@ -162,20 +170,50 @@ angular.module('farmers').controller('FarmersController', ['$scope', '$statePara
             $scope.graphData.datasets[0].data = [];
             $scope.graphData.datasets[1].data = [];
             $scope.viewAnimal = aIndex;
-            $scope.viewHerd = hIndex;
+            var totalHerdADWG= 0, totalAllADWG= 0, totalFeedPerDay=0;
             var index;
+            if (herdStats.length==0) return ($scope.graphData = false);
             for (index = 0; index < herdStats[hIndex][aIndex].length; index++) {
                 $scope.graphData.labels.push(moment.utc(herdStats[hIndex][aIndex][index].dte).format("D/M/YY"));
                 $scope.graphData.datasets[0].data.push(Math.round(herdStats[hIndex][aIndex][index].adwg * 100) / 100);
+                totalHerdADWG+=herdStats[hIndex][aIndex][index].adwg;
             };
+            $scope.stat1 = Math.round(totalHerdADWG/herdStats[hIndex][aIndex].length * 100)/100;
+
             for (index = 0; index < $scope.herdADWG[hIndex].length; index++) {
                 $scope.graphData.datasets[1].data.push(Math.round($scope.herdADWG[hIndex][index].adwg * 100) / 100);
+                totalAllADWG+=$scope.herdADWG[hIndex][index].adwg;
             };
+            $scope.stat2 = Math.round(totalAllADWG/$scope.herdADWG[hIndex].length * 100)/100;
+
+            $scope.graphFeedData.labels = [];
+            $scope.graphFeedData.datasets[0].data = [];
+            $scope.viewAnimal = aIndex;
+            var fIndex;
+            for (fIndex = 0; fIndex < $scope.farmer.herds[hIndex].feeds.length; fIndex++) { // examine each feed/herd
+                var feed = $scope.farmer.herds[hIndex].feeds[fIndex];   // grab feed change
+                $scope.graphFeedData.labels.push(moment.utc(feed.changed).format("D/M/YY"));
+                $scope.graphFeedData.datasets[0].data.push(feed.qty);
+                totalFeedPerDay+=feed.qty;
+            }   // end feed loop
+            $scope.stat4 = Math.round(totalFeedPerDay/$scope.farmer.herds[hIndex].feeds.length * 100)/100;
         };
 
         ////////////////////////////////////////////////////////////////////////////////////////
         ///////////// Chart.js Options
         ////////////////////////////////////////////////////////////////////////////////////////
+        $scope.graphFeedData = {
+            labels: [],
+            datasets: [
+                {
+                    label: 'Feed',
+                    fillColor: 'rgba(120,120,220,0.2)',
+                    strokeColor: 'rgba(220,220,220,1)',
+                    data: []
+                }
+            ]
+        };
+
         $scope.graphData = {
             labels: [],
             datasets: [
@@ -192,14 +230,40 @@ angular.module('farmers').controller('FarmersController', ['$scope', '$statePara
                 {
                     label: 'Rest of group',
                     fillColor: 'rgba(151,187,205,0.2)',
-                    strokeColor: 'rgba(151,187,205,0)',
-                    pointColor: 'rgba(151,187,205,0)',
+                    strokeColor: 'rgba(151,187,205,1)',
+                    pointColor: 'rgba(151,187,205,1)',
                     pointStrokeColor: "#ffff",
                     pointHighlightFill: '#fff',
                     pointHighlightStroke: 'rgba(151,187,205,0)',
                     data: []
                 }
             ]
+        };
+        $scope.feedOptions = {
+            //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+            scaleBeginAtZero : true,
+            //Boolean - Whether grid lines are shown across the chart
+            scaleShowGridLines : true,
+            //String - Colour of the grid lines
+            scaleGridLineColor : "rgba(0,0,0,.05)",
+            //Number - Width of the grid lines
+            scaleGridLineWidth : 1,
+            //Boolean - Whether to show horizontal lines (except X axis)
+            scaleShowHorizontalLines: true,
+            //Boolean - Whether to show vertical lines (except Y axis)
+            scaleShowVerticalLines: true,
+            //Boolean - If there is a stroke on each bar
+            barShowStroke : true,
+            //Number - Pixel width of the bar stroke
+            barStrokeWidth : 2,
+            //Number - Spacing between each of the X value sets
+            barValueSpacing : 5,
+            //Number - Spacing between data sets within X values
+            barDatasetSpacing : 1,
+            //String - A legend template
+            legendTemplate: "<div></div>",
+            //legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
+            tooltipTemplate: "<%if (label){%><%}%><%= value %> kg/day average"
         };
         $scope.options = {
             scaleOverride: true,
@@ -268,13 +332,15 @@ angular.module('farmers').controller('FarmersController', ['$scope', '$statePara
 ///////////// EDIT functions
 ////////////////////////////////////////////////////////////////////////////////////////
         $scope.addHerd = function () {
-            $scope.farmer.herds.push({herdName: $scope.newHerdName, animals: []});
+            $scope.farmer.herds.push({herdName: $scope.newHerdName, animals: [], feeds: []});
             $scope.selHerd.item = $scope.farmer.herds.length - 1;
             $scope.newHerdName = '';
         };
 
         $scope.addFeed = function () {
             if ($scope.selHerd.item < 0) return;
+            // check if no feed array in place
+            //if (!$scope.farmer.herds[$scope.selHerd.item].feeds) { $scope.farmer.herds[$scope.selHerd.item].feeds = new Array()};
             $scope.farmer.herds[$scope.selHerd.item].feeds.push({
                 changed: $scope.changed,
                 qty: $scope.qty,
@@ -334,6 +400,9 @@ angular.module('farmers').controller('FarmersController', ['$scope', '$statePara
                 title: this.title,
                 firstName: this.firstName,
                 lastName: this.lastName,
+                address1: this.address1,
+                address2: this.address2,
+                town: this.town,
                 herds: []
             });
             farmer.$save(function (response) {
@@ -376,7 +445,7 @@ angular.module('farmers').controller('FarmersController', ['$scope', '$statePara
             $scope.farmers = Farmers.query();
         };
 
-        $scope.findOne = function () {	// this retrieves the displayed Farmer FIRST so it's in $scope from get go
+        $scope.findOne = function () {	// this retrieves the displayed Farmer FIRST (in ng-init) so it's in $scope from get go
             $scope.farmer = Farmers.get({
                     farmerId: $stateParams.farmerId
                 },

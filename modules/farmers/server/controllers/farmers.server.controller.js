@@ -42,6 +42,9 @@ exports.update = function(req, res) {
 	farmer.title = req.body.title;
 	farmer.firstName = req.body.firstName;
 	farmer.lastName = req.body.lastName;
+	farmer.address1 = req.body.address1;
+	farmer.address2 = req.body.address2;
+	farmer.town = req.body.town;
 	farmer.herds = req.body.herds;
 
 	farmer.save(function(err) {

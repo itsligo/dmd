@@ -1,7 +1,7 @@
 <section data-ng-controller="FarmersController" data-ng-init="findOne()">
     <div class="page-header">
         <h1>{{farmer.firstName}} {{farmer.lastName}}</h1>
-        <lead>&nbsp;edit details</lead>
+        <h5>&nbsp;edit details</h5>
     </div>
     <div class="col-md-12">
         <form name="farmerForm" data-ng-submit="update()" novalidate>
@@ -32,6 +32,38 @@
                         <input name="lastName" type="text" data-ng-model="farmer.lastName" id="lastName"
                                class="form-control"
                                placeholder="Last Name" required>
+                    </div>
+
+                </div>
+            </div>
+            <br/>
+
+            <div class="row">
+                <div class="col-xs-2 col-md-2">
+                    <label class="control-label" for="address1">Address Line 1</label>
+
+                    <div class="controls">
+                        <input name="address1" type="text" data-ng-model="farmer.address1" id="address1"
+                               class="form-control"
+                               placeholder="Address Line 1" required>
+                    </div>
+                </div>
+                <div class="col-xs-3 col-md-3">
+                    <label class="control-label" for="address2">Address Line 2</label>
+
+                    <div class="controls">
+                        <input name="address2" type="text" data-ng-model="farmer.address2" id="address2"
+                               class="form-control"
+                               placeholder="Address Line 2" required>
+                    </div>
+                </div>
+                <div class="col-xs-3 col-md-3">
+                    <label class="control-label" for="town">Town</label>
+
+                    <div class="controls">
+                        <input name="town" type="text" data-ng-model="farmer.town" id="town"
+                               class="form-control"
+                               placeholder="Town">
                     </div>
 
                 </div>
@@ -87,7 +119,8 @@
                                 class="list-group-item">
                                 <strong>{{animal.tagID}}</strong>
                                 <a class="btn btn-xs btn-danger pull-right"
-                                   ng-click="delAnimal($index)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                                   ng-click="delAnimal($index)"><span class="glyphicon glyphicon-trash"
+                                                                      aria-hidden="true"></span></a>
                                 <span style="float:right;">&nbsp;&nbsp;{{animal.dob | date: 'shortDate'}}&nbsp;&nbsp;</span>
                                 <span class="badge" style="float:right;">{{animal.sex}}</span>
                             </li>
@@ -118,28 +151,30 @@
                            placeholder="New Group Name">
                 </div>
                 <div class="col-xs-3">
-                    <div class="row">
-                        <div class="col-xs-6" style="padding-right:2px;">
-                            <p class="input-group">
-                                <input type="text" class="form-control" datepicker-popup="dd/MM/yy"
-                                       ng-model="changed" is-open="openedFeed" placeholder="Date Feed Change"
-                                       datepicker-options="{formatYear: 'yy',startingDay: 1}" close-text="Close"/>
+                    <div ng-hide="selHerd.item==-1">
+                        <div class="row">
+                            <div class="col-xs-6" style="padding-right:2px;">
+                                <p class="input-group">
+                                    <input type="text" class="form-control" datepicker-popup="dd/MM/yy"
+                                           ng-model="changed" is-open="openedFeed" placeholder="Date Feed Change"
+                                           datepicker-options="{formatYear: 'yy',startingDay: 1}" close-text="Close"/>
                               <span class="input-group-btn">
                                 <button type="button" class="btn btn-default" ng-click="openFeed($event)"><i
                                         class="glyphicon glyphicon-calendar"></i></button>
                               </span>
-                            </p>
+                                </p>
+                            </div>
+                            <div class="col-xs-6" style="padding-left:2px">
+                                <p class="input-group">
+                                    <input name="feedQty" type="text" data-ng-model="qty" class="form-control"
+                                           placeholder="Qty">
+                                    <span class="input-group-addon">kgs</span>
+                                </p>
+                            </div>
                         </div>
-                        <div class="col-xs-6" style="padding-left:2px">
-                            <p class="input-group">
-                                <input name="feedQty" type="text" data-ng-model="qty" class="form-control"
-                                       placeholder="Qty">
-                                <span class="input-group-addon">kgs</span>
-                            </p>
-                        </div>
+                        <input name="feedType" type="text" data-ng-model="food" class="form-control"
+                               placeholder="Food Details">
                     </div>
-                    <input name="feedType" type="text" data-ng-model="food" class="form-control"
-                           placeholder="Food Details">
                 </div>
                 <div class="col-xs-3">
                     <div class="row">
@@ -175,7 +210,8 @@
                     </div>
                 </div>
                 <div class="col-xs-3">
-                    <div class="btn btn-success form-control" ng-disabled="!changed.length>0 && !qty.length>0"
+                    <div class="btn btn-success form-control"
+                         ng-disabled="!changed.length>0 && !qty.length>0 || selHerd.item==-1"
                          ng-click="addFeed()">Add Feed Change
                     </div>
                 </div>
