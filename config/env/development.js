@@ -1,9 +1,10 @@
 'use strict';
 
 module.exports = {
-	db: 'mongodb://localhost/mean-dev',
+	//db: 'mongodb://localhost/mean-dev',
+    db: 'mongodb://dmd1:wzTCwvm3SR@ds055822.mongolab.com:55822/dmd',
 	app: {
-		title: 'MEAN.JS - Development Environment'
+		title: 'DMD Manufacturing Prototype 1.0'
 	},
 	facebook: {
         clientID: process.env.FACEBOOK_ID || 'APP_ID',
@@ -36,7 +37,7 @@ module.exports = {
 			service: process.env.MAILER_SERVICE_PROVIDER || 'SendGrid',
 			auth: {
 				user: process.env.MAILER_EMAIL_ID || 'jkelleher',
-				pass: process.env.MAILER_PASSWORD || 'lFKWQq8Gz24dC'
+                pass: process.env.MAILER_PASSWORD || '*lFKWQq8Gz24dC'
 			}
 		}
 	}
