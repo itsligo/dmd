@@ -3,7 +3,8 @@
 module.exports = {
     secure: true,
     port: process.env.PORT || 8443,
-    db: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/mean',
+    //db: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/mean',
+    db: 'mongodb://dmd1:wzTCwvm3SR@ds055822.mongolab.com:55822/dmd',
     facebook: {
         clientID: process.env.FACEBOOK_ID || 'APP_ID',
         clientSecret: process.env.FACEBOOK_SECRET || 'APP_SECRET',
@@ -30,12 +31,12 @@ module.exports = {
         callbackURL: '/api/auth/github/callback'
     },
     mailer: {
-        from: process.env.MAILER_FROM || 'MAILER_FROM',
+        from: process.env.MAILER_FROM || 'DMD Manufacturing Ltd.',
         options: {
-            service: process.env.MAILER_SERVICE_PROVIDER || 'MAILER_SERVICE_PROVIDER',
+            service: process.env.MAILER_SERVICE_PROVIDER || 'SendGrid',
             auth: {
-                user: process.env.MAILER_EMAIL_ID || 'MAILER_EMAIL_ID',
-                pass: process.env.MAILER_PASSWORD || 'MAILER_PASSWORD'
+                user: process.env.MAILER_EMAIL_ID || 'jkelleher',
+                pass: process.env.MAILER_PASSWORD || '*lFKWQq8Gz24dC'
             }
         }
     }
