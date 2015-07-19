@@ -3,7 +3,7 @@
 	"description": "Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js.",
 	"version": "0.4.0",
 	"private": false,
-	"author": "https://github.com/meanjs/mean/graphs/contributors",
+	"author": "IT Sligo",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/meanjs/mean.git"
