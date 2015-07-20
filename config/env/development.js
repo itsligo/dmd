@@ -2,7 +2,7 @@
 
 module.exports = {
 	//db: 'mongodb://localhost/mean-dev',
-    db: 'mongodb://dmd1:wzTCwvm3SR@ds055822.mongolab.com:55822/dmd',
+    db: 'mongodb://dmd1:wzTCwvm3SR@ds055862.mongolab.com:55862/dmd',    // using davemullark mongolab account (see docs)
 	app: {
 		title: 'DMD Manufacturing Prototype 1.0'
 	},
