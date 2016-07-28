@@ -1,0 +1,267 @@
+<section data-ng-controller="FeedsController" data-ng-init="findOne()">
+
+    <div class="row">
+        <div class="col-md-11">
+            <h1>{{feed.title}}
+            <!-- <span><h5>{{feed.address1}}, {{feed.address2}}, {{feed.town}}.</h5></span></h1> -->
+        </div>
+        <div class="col-md-1">
+            <a style="margin-top:25px" class="btn btn-warning btn-sm" ui-sref="feeds.list()"><i class="glyphicon glyphicon-list">&nbsp;</i>Back to List</a>
+        </div>
+    </div>
+    <div class="row" ng-hide="graphData.datasets[0].data!=undefined">
+        <div class="well">
+            <h2 class="text-center">No Feed Data Entered</h2>
+            <h5 class="text-center"><span><a class="btn btn-primary" data-ui-sref="feeds.edit({feedId: feed._id})">
+                <i class="glyphicon glyphicon-edit"></i>
+            </a></span> to add feed data</h5>
+        </div>
+    </div>
+    <div class="row" ng-if="graphData.datasets[0].data!=undefined">
+        <div class="col-md-3">
+            <div class="widget style1 blue-bg">
+                <div class="row">
+                    <div class="col-xs-4 text-center">
+                        <!--<i style="font-size:3.7em;" class="glyphicon glyphicon-cloud"></i>-->
+                        <img height="80" style="margin-bottom: -9px" src="modules/core/img/brand/cow_white.png" />
+                    </div>
+                    <div class="col-xs-8 text-right">
+                        <span>Animal Avg Daily Wght Gain/Loss</span>
+                        <h2 class="font-bold">{{stat1}}<span style="font-size: 0.5em">&nbsp;kg/day</span></h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="widget style1 navy-bg">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <img height="80" style="margin-bottom: -9px" src="modules/core/img/brand/cows_white.png" />
+                    </div>
+                    <div class="col-xs-8 text-right">
+                        <span>Group Avg Wght Gain/Loss </span>
+                        <h2 class="font-bold">{{stat2}}<span style="font-size: 0.5em">&nbsp;kg/day</span></h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="widget style1 lazur-bg">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <img height="80" style="margin-bottom: -9px" src="modules/core/img/brand/chart_up_white.png" />
+                    </div>
+                    <div class="col-xs-8 text-right">
+                        <span>Max Weight Gain/Loss</span>
+                        <span>across Herd</span>
+                        <h2 class="font-bold">{{stat3}}<span style="font-size: 0.5em">&nbsp;kg/day</span></h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="widget style1 yellow-bg">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <img height="80" style="margin-bottom: -9px" src="modules/core/img/brand/feed_white.png" />
+                    </div>
+                    <div class="col-xs-8 text-right" ng-show="graphFeedData.datasets[0].data.length!=0">
+                        <span>Avg Feed/Day for Group</span>
+                        <h2 class="font-bold">{{stat4}}<span style="font-size: 0.5em">&nbsp;kg/day</span></h2>
+                    </div>
+                    <div class="col-xs-8 text-right" ng-show="graphFeedData.datasets[0].data.length==0">
+                        <span>Avg Feed/Day for Group</span>
+                        <h4 ng-show="graphFeedData.datasets[0].data.length==0">No feed data</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-if="graphData.datasets[0].data!=undefined">
+        <div class="wrapper wrapper-content">
+            <div class="col-xs-12 col-sm-12 col-md-7">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Weight Gain
+                            <small>for selected group</small>
+                        </h5>
+                        <div ibox-tools=""></div>
+                    </div>
+                    <div class="ibox-content">
+                        <div>
+                            <canvas tc-chartjs-line chart-options="options" chart-data="graphData" auto-legend></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox float-e-margins" ng-if="graphFeedData.datasets[0].data.length!=0">
+                    <div class="ibox-title">
+                        <h5>Feed changes
+                            <small>for selected group</small>
+                        </h5>
+                        <div ibox-tools=""></div>
+                    </div>
+                    <div class="ibox-content">
+                        <div>
+                            <canvas tc-chartjs-bar chart-options="feedOptions" chart-data="graphFeedData" auto-legend height="60"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox float-e-margins" ng-if="graphFeedData.datasets[0].data.length==0">
+                    <div class="well">
+                        <h4 class="text-center">No Animal Feed Data Entered</h4>
+                        <h5 class="text-center"><span><a class="btn btn-primary" data-ui-sref="feeds.edit({feedId: feed._id})">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a></span> to add feed data</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-5">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Choose Group
+                            <span>
+                                <div class="btn-group" style="margin-top: -18px; float: right">
+                                    <button type="button" ng-click="viewAllHerds=true; viewHerd=-1; genChart(0, 0);" class="btn btn-default"
+                                            ng-class="{'btn-primary': viewAllHerds}">All
+                                    </button>
+
+                                    <button ng-repeat="hrd in feed.herds" type="button" ng-disabled="hrd.animals.length===0"
+                                            ng-click="$parent.viewAllHerds=false; $parent.viewHerd=$index; genChart(viewHerd,viewAnimal);"
+                                            class="btn btn-default" ng-class="{'btn-primary': viewHerd==$index && viewAllHerds==false}">
+                                        {{hrd.herdName | limitTo:4}}
+                                    </button>
+                                </div>
+                                </span>
+                        </h5>
+                        </h5>
+                    </div>
+                </div>
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Date Range
+                            <small>Restrict data to...</small>
+                            <span class="pull-right" style="margin-top:-19px; margin-right:10px">
+                            <input date-range-picker class="form-control date-picker" style="width:105%" type="text"
+                                   ng-model="date"
+                                   options="drpOpts"/>
+                        </span>
+                        </h5>
+                    </div>
+                </div>
+                <div class="ibox float-e-margins">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Animals
+                                <small>from <span ng-show="viewHerd==-1">all groups</span><span ng-show="viewHerd!=-1">group {{feed.herds[viewHerd].herdName}}</span>.
+                                </small>
+                            </h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div ng-hide="viewAllHerds">            <!-- showing viewHerd, all animals !-->
+                                <table ng-table class="table">
+                                    <tr ng-repeat="beast in feed.herds[viewHerd].animals" style="cursor: pointer;"
+                                        ng-click="genChart(viewHerd,$index)" ng-class="{active: viewAnimal==$index}">
+                                        <td data-title="'tag ID'">{{beast.tagID}}</td>
+                                        <td data-title="'dob'">{{beast.dob | date: 'shortDate' }}</td>
+                                        <td data-title="'sex'"><span class="pull-right badge badge-xs">{{beast.sex}}</span></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div ng-show="viewAllHerds">            <!-- showing all herds, all animals !-->
+                                <div ng-repeat="hrd in feed.herds">
+                                    <table ng-table class="table" ng-hide="hrd.animals.length==0">
+                                        <tr ng-repeat="beast in hrd.animals" style="cursor: pointer"
+                                            ng-click="genChart($parent.$index,$index)" ng-class="{active: viewAnimal==$index && viewHerd==$parent.$index}">
+                                            <td data-title="'tag ID'">{{beast.tagID}} </td>
+                                            <td data-title="'dob'">{{beast.dob | date: 'shortDate' }}</td>
+                                            <td data-title="'sex'"><span
+                                                    class="pull-right badge badge-xs">{{beast.sex}}</span></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--Herd:{{viewHerd}}-->
+                            <!--Animal:{{viewAnimal}}-->
+
+                            <!--<table class="table table-hover no-margins">-->
+                            <!--<thead>-->
+                            <!--<tr>-->
+                            <!--<th>#</th>-->
+                            <!--<th>Data</th>-->
+                            <!--<th>User</th>-->
+                            <!--<th>Value</th>-->
+                            <!--</tr>-->
+                            <!--</thead>-->
+                            <!--<tbody>-->
+                            <!--<tr>-->
+                            <!--<td>1</td>-->
+                            <!--<td>-->
+                            <!--<div style="width:200px; height:5px;">-->
+                            <!--<canvas height="25" width="100" tc-chartjs-line chart-options="sparkOptions"-->
+                            <!--chart-data="data"></canvas>-->
+                            <!--</div>-->
+                            <!--</td>-->
+                            <!--<td>Samantha</td>-->
+                            <!--<td class="text-navy"><i class="fa fa-level-up"></i> 40%</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>2</td>-->
+                            <!--<td>-->
+                            <!--<div style="width:200px; height:5px;">-->
+                            <!--<canvas height="25" width="100" tc-chartjs-bar chart-options="sparkOptions"-->
+                            <!--chart-data="data"></canvas>-->
+                            <!--</div>-->
+                            <!--</td>-->
+                            <!--<td>Jacob</td>-->
+                            <!--<td class="text-warning"><i class="fa fa-level-down"></i> -20%</td>-->
+                            <!--</tr>-->
+                            <!--</tbody>-->
+                            <!--</table>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <!-- herdADWG: {{herdADWG[viewHerd][0]}}<br/>
+    herdADWG: {{herdADWG[viewHerd][1]}}<br/>
+    herdADWG: {{herdADWG[viewHerd][2]}}<br/>
+    herdADWG: {{herdADWG[viewHerd][3]}}<br/>
+    herdADWG: {{herdADWG[viewHerd][4]}}<br/>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="table table-striped">
+                <tr>
+                    <td>ADWG Date</td>
+                    <td>ADWG</td>
+                </tr>
+                <tr ng-repeat="a in herdADWG[viewHerd]">
+                    {{a}}
+                    <td>{{a.dte}}</td>
+                    <td>{{a.adwg}}</td>
+                </tr>
+
+            </div>
+        </div>
+    </div>
+-->
+    <div class="pull-right" data-ng-show="authentication.user._id == feed.user._id">
+        <a class="btn btn-primary" data-ui-sref="feeds.edit({feedId: feed._id})">
+            <i class="glyphicon glyphicon-edit"></i>
+        </a>
+        <a class="btn btn-primary" data-ng-click="remove();">
+            <i class="glyphicon glyphicon-trash"></i>
+        </a>
+    </div>
+
+    <small>
+        <em class="text-muted">
+            Posted on
+            <span data-ng-bind="feed.created | date:'mediumDate'"></span>
+            by
+            <span data-ng-bind="feed.user.displayName"></span>
+        </em>
+    </small>
+    </section>

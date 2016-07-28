@@ -9,6 +9,6 @@ module.exports = {
 	},
 	port: process.env.PORT || 3000,
 	templateEngine: 'swig',
-	sessionSecret: 'MEANDMD',
+	sessionSecret: 'MEAN',
 	sessionCollection: 'sessions'
 };

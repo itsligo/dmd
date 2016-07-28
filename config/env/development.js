@@ -4,7 +4,7 @@ module.exports = {
 	//db: 'mongodb://localhost/mean-dev',
     db: 'mongodb://dmd1:wzTCwvm3SR@ds055862.mongolab.com:55862/dmd',    // using davemullark mongolab account (see docs)
 	app: {
-		title: 'DMD Manufacturing Prototype 1.0'
+		title: 'DMD Manufacturing Prototype 2.0 DEV'
 	},
 	facebook: {
         clientID: process.env.FACEBOOK_ID || 'APP_ID',

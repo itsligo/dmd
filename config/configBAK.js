@@ -56,34 +56,16 @@ var validateEnvironmentVariable = function() {
     console.log();
     if (!environmentFiles.length) {
         if (process.env.NODE_ENV) {
-            console.error(chalk.red('+ Error: No configuration file found for "' + process.env.NODE_ENV + '" environment using development instead'));
+            console.error(chalk.red('No configuration file found for "' + process.env.NODE_ENV + '" environment using development instead'));
         } else {
-            console.error(chalk.red('+ Error: NODE_ENV is not defined! Using default development environment'));
+            console.error(chalk.red('NODE_ENV is not defined! Using default development environment'));
         }
         process.env.NODE_ENV = 'development';
+    } else {
+        console.log(chalk.bold('Application loaded using the "' + process.env.NODE_ENV + '" environment configuration'));
     }
     // Reset console color
     console.log(chalk.white(''));
-};
-
-/**
- * Validate Secure=true parameter can actually be turned on
- * because it requires certs and key files to be available
- */
-var validateSecureMode = function(config) {
-
-    if (config.secure !== true)
-        return true;
-
-    var privateKey = fs.existsSync('./config/sslcerts/key.pem');
-    var certificate = fs.existsSync('./config/sslcerts/cert.pem');
-
-    if (!privateKey || !certificate) {
-        chalk.red(console.log('+ Error: Certificate file or key file is missing, falling back to non-SSL mode'));
-        chalk.red(console.log('  To create them, simply run the following from your shell: sh ./scripts/generate-ssl-certs.sh'));
-        console.log();
-        config.secure = false;
-    }
 };
 
 /**
@@ -142,14 +124,14 @@ var initGlobalConfig = function() {
     // Validate NDOE_ENV existance
     validateEnvironmentVariable();
 
-    // Get the default assets
-    var defaultAssets = require(path.join(process.cwd(), 'config/assets/default'));
+	// Get the default assets
+	var defaultAssets = require(path.join(process.cwd(), 'config/assets/default'));
 
-    // Get the current assets
-    var environmentAssets = require(path.join(process.cwd(), 'config/assets/', process.env.NODE_ENV)) || {};
+	// Get the current assets
+	var environmentAssets = require(path.join(process.cwd(), 'config/assets/', process.env.NODE_ENV)) || {};
 
-    // Merge assets
-    var assets = _.merge(defaultAssets, environmentAssets);
+	// Merge assets
+	var assets = _.extend(defaultAssets, environmentAssets);
 
     // Get the default config
     var defaultConfig = require(path.join(process.cwd(), 'config/env/default'));
@@ -158,18 +140,15 @@ var initGlobalConfig = function() {
     var environmentConfig = require(path.join(process.cwd(), 'config/env/', process.env.NODE_ENV)) || {};
 
     // Merge config files
-    var envConf = _.merge(defaultConfig, environmentConfig);
+    var envConf = _.extend(defaultConfig, environmentConfig);
 
-    var config = _.merge(envConf, (fs.existsSync(path.join(process.cwd(), 'config/env/local.js')) && require(path.join(process.cwd(), 'config/env/local.js'))) || {});
+   var config = _.merge(envConf, (fs.existsSync(path.join(process.cwd(), 'config/env/local.js')) && require(path.join(process.cwd(), 'config/env/local.js'))) || {});
 
     // Initialize global globbed files
     initGlobalConfigFiles(config, assets);
 
     // Initialize global globbed folders
     initGlobalConfigFolders(config, assets);
-
-    // Validate Secure SSL mode can be used
-    validateSecureMode(config);
 
     // Expose configuration utilities
     config.utils = {

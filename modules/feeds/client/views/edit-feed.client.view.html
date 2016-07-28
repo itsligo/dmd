@@ -1,0 +1,116 @@
+<section data-ng-controller="FeedsController" data-ng-init="findOne()">
+    <div class="page-header">
+        <h1>{{feed.title}}</h1>
+        <h5>&nbsp;edit details</h5>
+    </div>
+    <div class="col-md-12">
+        <form name="feedForm" data-ng-submit="update()" novalidate>
+
+            <div class="row">
+              <div class="col-xs-3 col-md-3">
+                <br/>
+                <h4 class="control-label" for="">Core Ingredients</h4>
+              </div>
+              <div class="col-xs-2 col-md-2 ">
+              </div>
+              <div class="col-xs-3 col-md-3 ">
+                    <label class="control-label" for="title">Food Mix Name</label>
+
+                    <div class="controls">
+                        <input name="title" type="text" data-ng-model="feed.title" id="title" class="form-control"
+                               placeholder="Food Mix Name" required>
+                    </div>
+                </div>
+            </div>
+            <br/>
+
+            <div class="row">
+                <div class="col-xs-3 col-md-3">
+                  <div class="panel panel-info">
+                      <div class="panel-heading">
+                          <h3 class="panel-title">
+                              Available Ingredients</h3>
+                      </div>
+                      <ul class="list-group" style="height:150px; overflow-y:auto;">
+                          <li ng-repeat="feedChg in feed.mixes[selMix.item].feeds"
+                              class="list-group-item">
+                              <strong>{{feedChg.changed | date: 'shortDate'}}&nbsp;</strong>
+                              <span>{{feedChg.food}}</span>
+
+                              <a class="btn btn-xs btn-danger pull-right" ng-click="delFeed($index)"><span
+                                      class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                              <span style="float:right; margin-right:6px;">{{feedChg.qty}}kgs</span>
+                          </li>
+                      </ul>
+                  </div>
+                </div>
+                <div class="col-xs-2 col-md-2 ">
+                  <br/><br/><br/>
+                  <div class="btn btn-success form-control"
+                       ng-click="addFood()">Add Ingredient <span class="glyphicon glyphicon-chevron-right"></span>
+                  </div>
+                </div>
+                <div class="col-xs-3 col-md-3">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                {{feed.mixes.length}} Mix Ingredients
+                        </div>
+                        <ul class="list-group" style="height:150px; overflow-y:auto;">
+                            <li ng-repeat="mix in feed.mixes"
+                                ng-class="{'active': selmix.item==$index}" ng-click="selmix.item = $index"
+                                class="list-group-item">
+                                <strong>{{mix.food.foodID}}</strong>
+                                <a class="btn btn-xs btn-danger pull-right"
+                                   ng-click="delmix($index)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                                <span style="float:right;" class="badge">&nbsp;&nbsp;{{mix.food.shareOfFeed}}&nbsp;&nbsp;</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-3">
+                    <input name="foodID" type="text" data-ng-model="foodID"
+                           id="foodID"
+                           class="form-control"
+                           placeholder="New Ingredient Name">
+                </div>
+                <div class="col-xs-2 col-md-2 ">
+                </div>
+                <div class="col-xs-3">
+                  <div class="col-sm-4"><uib-progressbar class="progress-striped" value="22" type="warning">22%</uib-progressbar></div>
+                </div>
+            </div>
+
+            <br/>
+
+            <div class="row">
+                <div class="col-xs-3 col-md-3">
+                  <div class="btn btn-success form-control"
+                       ng-disabled="!changed.length>0 && !qty.length>0 || selMix.item==-1"
+                       ng-click="addFood()">Add New Food
+                  </div>
+                </div>
+                <div class="col-xs-2 col-md-2 ">
+                </div>
+                <div class="col-xs-3 col-md-3">
+
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <div class="row">
+                <div class="col-xs-2">
+                    <input type="submit" value="Update" class="btn btn-primary btn-block">
+                </div>
+                <div class="col-xs-2">
+                    <a ui-sref="feeds.view({feedId: feed._id})" class="btn btn-default  btn-block">Cancel</a>
+                </div>
+            </div>
+            <div data-ng-show="error" class="text-danger">
+                <strong data-ng-bind="error"></strong>
+            </div>
+        </form>
+    </div>
+</section>

@@ -8,7 +8,7 @@ module.exports = {
 				//'public/lib/bootstrap/dist/css/bootstrap-theme.css',
 				'public/lib/bootstrap-daterangepicker/daterangepicker-bs3.css',
 				'public/lib/ng-table/dist/ng-table.css',
-				'http://fonts.googleapis.com/css?family=Open+Sans'
+				'https://fonts.googleapis.com/css?family=Open+Sans'
 			],
 			js: [
 				'public/lib/angular/angular.js',
@@ -27,7 +27,7 @@ module.exports = {
 				'public/lib/moment/locale/en-ie.js',		// Note necessary for proper IE date handling
 				'public/lib/bootstrap-daterangepicker/daterangepicker.js',
 				'public/lib/angular-daterangepicker/js/angular-daterangepicker.js',
-				'public/lib/lodash/lodash.min.js',
+				'public/lib/lodash/lodash.js',
 				'public/lib/ng-table/dist/ng-table.js'
 			],
 			tests: ['public/lib/angular-mocks/angular-mocks.js']

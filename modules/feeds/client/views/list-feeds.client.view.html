@@ -1,0 +1,45 @@
+<section data-ng-controller="FeedsController" ng-init="find()">
+    <div class="page-header">
+        <div class="col-md-12"><h1><span><strong>feed</strong></span> list</h1></div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="list-group">
+                <a ng-repeat="feed in feeds" data-ui-sref="feeds.edit({feedId: feed._id})"
+                   class="list-group-item">
+                    <!--<small class="list-group-item-text">-->
+                        <!--Posted on-->
+                        <!--<span data-ng-bind="farmer.created | date:'mediumDate'"></span>-->
+                        <!--by-->
+                        <!--<span data-ng-bind="farmer.user.displayName"></span>-->
+                        <!--(User Id: <span data-ng-bind="farmer.user._id"></span>)-->
+                    <!--</small>-->
+                    <div class="row">
+                        <div class="col-md-2">
+                            <span class="glyphicon glyphicon-user" aria-hidden="true" style="font-size:3.3em; margin-top:12px; color:#dca7a7"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <h4>
+                                <span class="list-group-item-heading">{{feed.title}}</span>
+                                <span class="list-group-item-text">{{feed.qty}}</span>
+                            </h4>
+                            <small style="margin-top: -25px">{{feed.mixes.length}}</small>
+                        </div>
+                        <div class="col-md-3">
+                            <div style="margin-top: 15px;">
+                                <p ng-show="feed.mixes.length!=0">{{feed.mixes.length}} Mixes</p>
+                                <p ng-show="feed.mixes.length==1">{{feed.mixes[0].food.foodID}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="alert alert-warning text-center" data-ng-if="feeds.$resolved && !feeds.length">
+                No feeds yet, why don't you <a data-ui-sref="feeds.create">create one</a>?
+            </div>
+        </div>
+        <div class="col-xs-2">
+            <a ui-sref="feeds.create" class="btn btn-success">Create New Feed...</a>
+        </div>
+    </div>
+</section>
