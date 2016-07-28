@@ -19,7 +19,7 @@ module.exports = {
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
 				'public/lib/angular-file-upload/angular-file-upload.js',
 				'public/lib/angular-locale_en-ie.js',
-				'public/lib/Chart.js/Chart.js',
+				'public/lib/Chart.js/dist/Chart.js',
 				'public/lib/tc-angular-chartjs/dist/tc-angular-chartjs.js',
 				'public/lib/jquery/dist/jquery.js',
 				'public/lib/bootstrap/dist/js/bootstrap.js',

@@ -58,12 +58,12 @@
 	<script type="text/javascript">
 		var user = {{ user | json | safe }};
 	</script>
-	
+
 	<!--Load The Socket.io File-->
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 
 	<!--Application JavaScript Files-->
-	{% for jsFile in jsFiles %}<script type="text/javascript" src="{{jsFile}}"></script>{% endfor %} 
+	{% for jsFile in jsFiles %}<script type="text/javascript" src="{{jsFile}}"></script>{% endfor %}
 
 	{% if process.env.NODE_ENV === 'development' %}
 	<!--Livereload script rendered -->
@@ -86,7 +86,7 @@
 		with <strong>DMD Manufacturing Ltd.</strong>
 	</div>
 	<div>
-		<strong>Copyright</strong>&nbsp;&nbsp;John Kelleher, IT Sligo &copy; 2014-2015
+		<strong>Copyright</strong>&nbsp;&nbsp;John Kelleher, IT Sligo &copy; 2014-2016
 	</div>
 </div>
 </html>
