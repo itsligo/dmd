@@ -13,7 +13,7 @@
               </div>
               <div class="col-xs-2 col-md-2 ">
               </div>
-              <div class="col-xs-3 col-md-3 ">
+              <div class="col-xs-4 col-md-4 ">
                     <label class="control-label" for="title">Food Mix Name</label>
 
                     <div class="controls">
@@ -29,17 +29,15 @@
                   <div class="panel panel-info">
                       <div class="panel-heading">
                           <h3 class="panel-title">
-                              Available Ingredients</h3>
+                              Available Foods [{{foods.length}}]</h3>
                       </div>
                       <ul class="list-group" style="height:150px; overflow-y:auto;">
-                          <li ng-repeat="feedChg in feed.mixes[selMix.item].feeds"
+                          <li ng-repeat="food in foods" ng-class="{'active': selFood.item==$index}"
+                              ng-click="selFood.item = $index"
                               class="list-group-item">
-                              <strong>{{feedChg.changed | date: 'shortDate'}}&nbsp;</strong>
-                              <span>{{feedChg.food}}</span>
-
-                              <a class="btn btn-xs btn-danger pull-right" ng-click="delFeed($index)"><span
+                              <strong>{{food.title}}&nbsp;</strong>
+                              <a class="btn btn-xs btn-danger pull-right" ng-click="delFood(food)"><span
                                       class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
-                              <span style="float:right; margin-right:6px;">{{feedChg.qty}}kgs</span>
                           </li>
                       </ul>
                   </div>
@@ -47,10 +45,10 @@
                 <div class="col-xs-2 col-md-2 ">
                   <br/><br/><br/>
                   <div class="btn btn-success form-control"
-                       ng-click="addFood()">Add Ingredient <span class="glyphicon glyphicon-chevron-right"></span>
+                       ng-click="addToMix()">Add Ingredient <span class="glyphicon glyphicon-chevron-right"></span>
                   </div>
                 </div>
-                <div class="col-xs-3 col-md-3">
+                <div class="col-xs-4 col-md-4">
                     <div class="panel panel-info">
                         <div class="panel-heading">
                             <h3 class="panel-title">
@@ -60,10 +58,11 @@
                             <li ng-repeat="mix in feed.mixes"
                                 ng-class="{'active': selmix.item==$index}" ng-click="selmix.item = $index"
                                 class="list-group-item">
-                                <strong>{{mix.food.foodID}}</strong>
+                                <strong>{{mix.food}}</strong>
                                 <a class="btn btn-xs btn-danger pull-right"
-                                   ng-click="delmix($index)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
-                                <span style="float:right;" class="badge">&nbsp;&nbsp;{{mix.food.shareOfFeed}}&nbsp;&nbsp;</span>
+                                   ng-click="delMix($index)">
+                                   <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                                <span class="badge ">{{mix.shareOfFeed | number:0}}%</span>
                             </li>
                         </ul>
                     </div>
@@ -78,8 +77,10 @@
                 </div>
                 <div class="col-xs-2 col-md-2 ">
                 </div>
-                <div class="col-xs-3">
-                  <div class="col-sm-4"><uib-progressbar class="progress-striped" value="22" type="warning">22%</uib-progressbar></div>
+                <div class="col-xs-4 col-md-4">
+                  <uib-progress>
+                    <uib-bar ng-repeat="mix in feed.mixes track by $index" value="mix.shareOfFeed | number:0" type="{{types[$index]}}">{{mix.shareOfFeed|number:0}}%</uib-bar>
+                  </uib-progress>
                 </div>
             </div>
 
@@ -88,24 +89,30 @@
             <div class="row">
                 <div class="col-xs-3 col-md-3">
                   <div class="btn btn-success form-control"
-                       ng-disabled="!changed.length>0 && !qty.length>0 || selMix.item==-1"
+                       ng-disabled="!foodID.length>0"
                        ng-click="addFood()">Add New Food
                   </div>
                 </div>
                 <div class="col-xs-2 col-md-2 ">
                 </div>
-                <div class="col-xs-3 col-md-3">
+                <div class="col-xs-4 col-md-4">
 
                 </div>
             </div>
             <br/>
             <br/>
             <div class="row">
-                <div class="col-xs-2">
+                <div class="col-xs-3 col-md-3">
                     <input type="submit" value="Update" class="btn btn-primary btn-block">
                 </div>
-                <div class="col-xs-2">
-                    <a ui-sref="feeds.view({feedId: feed._id})" class="btn btn-default  btn-block">Cancel</a>
+                <div class="col-xs-3 col-md-3">
+                    <!-- <a ui-sref="feeds.view({feedId: feed._id})" class="btn btn-default btn-block">Cancel</a> -->
+                    <a ui-sref="feeds.list" class="btn btn-default btn-block">Cancel</a>
+                </div>
+                <div class="col-xs-3 col-md-3">
+                    <!-- <a ui-sref="/feeds" class="btn btn-default btn-block">Delete</a> -->
+                    <div class="btn btn-success form-control" ng-click="remove()">Delete
+                    </div>
                 </div>
             </div>
             <div data-ng-show="error" class="text-danger">

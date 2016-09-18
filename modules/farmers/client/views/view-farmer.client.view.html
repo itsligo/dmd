@@ -84,26 +84,26 @@
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5>Weight Gain
-                            <small>for selected group</small>
+                            <small>for selected herd</small>
                         </h5>
                         <div ibox-tools=""></div>
                     </div>
                     <div class="ibox-content">
                         <div>
-                            <canvas tc-chartjs-line chart-options="options" chart-data="graphData" auto-legend></canvas>
+                            <canvas tc-chartjs-line chart-options="options" chart-data="graphData" ></canvas>
                         </div>
                     </div>
                 </div>
                 <div class="ibox float-e-margins" ng-if="graphFeedData.datasets[0].data.length!=0">
                     <div class="ibox-title">
                         <h5>Feed changes
-                            <small>for selected group</small>
+                            <small>for selected herd</small>
                         </h5>
                         <div ibox-tools=""></div>
                     </div>
                     <div class="ibox-content">
                         <div>
-                            <canvas tc-chartjs-bar chart-options="feedOptions" chart-data="graphFeedData" auto-legend height="60"></canvas>
+                            <canvas tc-chartjs-bar chart-options="feedOptions" chart-data="graphFeedData" height="60"></canvas>
                         </div>
                     </div>
                 </div>
@@ -119,12 +119,12 @@
             <div class="col-xs-12 col-sm-12 col-md-5">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>Choose Group
+                        <h5>Choose Herd
                             <span>
                                 <div class="btn-group" style="margin-top: -18px; float: right">
-                                    <button type="button" ng-click="viewAllHerds=true; viewHerd=-1; genChart(0, 0);" class="btn btn-default"
+                                    <!-- <button type="button" ng-click="viewAllHerds=true; viewHerd=-1; genChart(0, 0);" class="btn btn-default"
                                             ng-class="{'btn-primary': viewAllHerds}">All
-                                    </button>
+                                    </button> -->
 
                                     <button ng-repeat="hrd in farmer.herds" type="button" ng-disabled="hrd.animals.length===0"
                                             ng-click="$parent.viewAllHerds=false; $parent.viewHerd=$index; genChart(viewHerd,viewAnimal);"
@@ -153,7 +153,7 @@
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>Animals
-                                <small>from <span ng-show="viewHerd==-1">all groups</span><span ng-show="viewHerd!=-1">group {{farmer.herds[viewHerd].herdName}}</span>.
+                                <small>from <span ng-show="viewHerd==-1">all herds</span><span ng-show="viewHerd!=-1">herd {{farmer.herds[viewHerd].herdName}}</span>.
                                 </small>
                             </h5>
                         </div>
@@ -221,8 +221,41 @@
                         </div>
                     </div>
                 </div>
+                <!-- Table of best feeds - those with greatest ADWG  -->
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Feeds League
+                            <small>best performing feeds from <span ng-show="viewHerd==-1">all herds</span><span ng-show="viewHerd!=-1">herd {{farmer.herds[viewHerd].herdName}}</span>.
+                            </small>
+                        </h5>
+                        <div ibox-tools=""></div>
+                    </div>
+                    <div class="ibox-content">
+                        <div>
+                          <table ng-table class="table">
+                              <tr ng-repeat="feedChg in farmer.herds[viewHerd].feedChgs | orderBy: 'adwg/cntr':true" style="cursor: pointer;"
+                                  data-ui-sref="feeds.edit({feedId: feedChg.feedMix._id})" ng-class="{active: viewAnimal==$index}">
+                                  <td data-title="'Feed Mix'"><mark><strong>{{feedChg.feedMix.title}}</strong></mark> @ {{feedChg.qty}}kg from {{feedChg.changed|date:"d/M/yyyy"}}</td>
+                                  <!--<td data-title="'start'">{{feedChg.changed | date: "d/M/yyyy" }}</td>
+                                  <td data-title="'qty'"><span class="pull-right badge badge-xs">{{feedChg.qty  | number:1}}kgs</span></td>
+                                  <td data-title="'ADWG'"><span class="pull-right badge badge-xs">{{feedChg.adwg  | number:2}}</span></td> -->
+                                  <td data-title="'Avg'"><span class="pull-right badge badge-xs">{{feedChg.adwg/feedChg.cntr | number:2}} kgs/day</span></td>
+                              </tr>
+                          </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox float-e-margins" data-ng-show="authentication.user._id == farmer.user._id">
+                    <a class="btn btn-primary" data-ui-sref="farmers.edit({farmerId: farmer._id})">
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </a>
+                    <a class="btn btn-primary" data-ng-click="remove();">
+                        <i class="glyphicon glyphicon-trash"></i>
+                    </a>
+                </div>
             </div>
         </div>
+
     </div>
 
    <!-- herdADWG: {{herdADWG[viewHerd][0]}}<br/>
@@ -247,14 +280,7 @@
         </div>
     </div>
 -->
-    <div class="pull-right" data-ng-show="authentication.user._id == farmer.user._id">
-        <a class="btn btn-primary" data-ui-sref="farmers.edit({farmerId: farmer._id})">
-            <i class="glyphicon glyphicon-edit"></i>
-        </a>
-        <a class="btn btn-primary" data-ng-click="remove();">
-            <i class="glyphicon glyphicon-trash"></i>
-        </a>
-    </div>
+
 
     <small>
         <em class="text-muted">

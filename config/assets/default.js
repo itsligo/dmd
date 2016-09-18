@@ -6,7 +6,7 @@ module.exports = {
 			css: [
 				'public/lib/bootstrap/dist/css/bootstrap.css',
 				//'public/lib/bootstrap/dist/css/bootstrap-theme.css',
-				'public/lib/bootstrap-daterangepicker/daterangepicker-bs3.css',
+				'public/lib/bootstrap-daterangepicker/daterangepicker.css',
 				'public/lib/ng-table/dist/ng-table.css',
 				'https://fonts.googleapis.com/css?family=Open+Sans'
 			],

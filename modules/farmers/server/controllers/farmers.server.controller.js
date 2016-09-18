@@ -94,14 +94,11 @@ exports.list = function(req, res) {
  * farmer middleware
  */
 exports.farmerByID = function(req, res, next, id) {
-	Farmer.findById(id).populate('user', 'displayName').exec(function(err, farmer) {
+	// Farmer.findById(id).populate('user', 'displayName').exec(function(err, farmer) {
+	Farmer.findById(id).populate('herds.feedChgs.feedMix').populate('user', 'displayName').exec(function(err, farmer) {
 		if (err) return next(err);
 		if (!farmer) return next(new Error('Failed to load farmer ' + id));
 		req.farmer = farmer;
 		next();
 	});
 };
-
-/**
- * Charting Queries
- */

@@ -19,18 +19,30 @@ var WeightSchema = new Schema({
     }
 });
 
-var FeedSchema = new Schema({
+// var FeedSchema = new Schema({
+//     changed: {
+//         type: Date
+//     },
+//     qty: {
+//         type: Number
+//     },
+//     food: {
+//         type: String
+//     }
+// });
+
+var FeedChgSchema = new Schema({
     changed: {
         type: Date
     },
     qty: {
         type: Number
     },
-    food: {
-        type: String
-    }
+    feedMix: {
+        type: Schema.ObjectId,
+        ref: 'Feed'
+    },
 });
-
 
 var AnimalSchema = new Schema({
     tagID: {
@@ -53,7 +65,7 @@ var HerdSchema = new Schema({
         trim: true
     },
     animals: [AnimalSchema],
-    feeds: [FeedSchema]
+    feedChgs: [FeedChgSchema]
 });
 
 /**

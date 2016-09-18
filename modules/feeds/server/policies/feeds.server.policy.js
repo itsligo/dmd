@@ -28,7 +28,8 @@ exports.invokeRolesPolicies = function() {
 			permissions: ['get', 'post']
 		}, {
 			resources: '/api/feeds/:feedId',
-			permissions: ['get']
+			// permissions: ['get']		// add 'put' not sure why not here???
+			permissions: '*'		// add 'put' not sure why not here???
 		}]
 	}, {
 		roles: ['guest'],

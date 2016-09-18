@@ -9,47 +9,47 @@ var acl = require('acl');
 acl = new acl(new acl.memoryBackend());
 
 /**
- * Invoke farmers Permissions
+ * Invoke foods Permissions
  */
 exports.invokeRolesPolicies = function() {
 	acl.allow([{
 		roles: ['admin'],
 		allows: [{
-			resources: '/api/farmers',
+			resources: '/api/foods',
 			permissions: '*'
 		}, {
-			resources: '/api/farmers/:farmerId',
+			resources: '/api/foods/:foodId',
 			permissions: '*'
 		}]
 	}, {
 		roles: ['user'],
 		allows: [{
-			resources: '/api/farmers',
+			resources: '/api/foods',
 			permissions: ['get', 'post']
 		}, {
-			resources: '/api/farmers/:farmerId',
-			permissions: ['get', 'put']	// why I need to add 'PUT' here??
+			resources: '/api/foods/:foodId',
+			permissions: ['get']
 		}]
 	}, {
 		roles: ['guest'],
 		allows: [{
-			resources: '/api/farmers',
-			permissions: ['get']
+			resources: '/api/foods',
+			permissions: ['get','post']		// remove 'post' after testing (used only to support Postman)
 		}, {
-			resources: '/api/farmers/:farmerId',
+			resources: '/api/foods/:foodId',
 			permissions: ['get']
 		}]
 	}]);
 };
 
 /**
- * Check If farmers Policy Allows
+ * Check If foods Policy Allows
  */
 exports.isAllowed = function(req, res, next) {
 	var roles = (req.user) ? req.user.roles : ['guest'];
 
-	// If a farmer is being processed and the current user created it then allow any manipulation
-	if (req.farmer && req.user && req.farmer.user.id === req.user.id) {
+	// If a food is being processed and the current user created it then allow any manipulation
+	if (req.food && req.user && req.food.user.id === req.user.id) {
 		return next();
 	}
 

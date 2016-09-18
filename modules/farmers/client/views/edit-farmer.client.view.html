@@ -90,15 +90,14 @@
                     <div class="panel panel-info">
                         <div class="panel-heading">
                             <h3 class="panel-title">
-                                {{farmer.herds[selHerd.item].feeds.length}} Feed Changes for Group
+                                {{farmer.herds[selHerd.item].feedChgs.length}} Feed Changes for Group
                                 {{farmer.herds[selHerd.item].herdName}}</h3>
                         </div>
                         <ul class="list-group" style="height:150px; overflow-y:auto;">
-                            <li ng-repeat="feedChg in farmer.herds[selHerd.item].feeds"
+                            <li ng-repeat="feedChg in farmer.herds[selHerd.item].feedChgs"
                                 class="list-group-item">
-                                <strong>{{feedChg.changed | date: 'shortDate'}}&nbsp;</strong>
-                                <span>{{feedChg.food}}</span>
-
+                                <strong>{{feedChg.changed | date:"d/M/yyyy"}}&nbsp;</strong>
+                                <span>{{feedChg.feedMix.title}}</span>
                                 <a class="btn btn-xs btn-danger pull-right" ng-click="delFeed($index)"><span
                                         class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
                                 <span style="float:right; margin-right:6px;">{{feedChg.qty}}kgs</span>
@@ -121,7 +120,7 @@
                                 <a class="btn btn-xs btn-danger pull-right"
                                    ng-click="delAnimal($index)"><span class="glyphicon glyphicon-trash"
                                                                       aria-hidden="true"></span></a>
-                                <span style="float:right;">&nbsp;&nbsp;{{animal.dob | date: 'shortDate'}}&nbsp;&nbsp;</span>
+                                <span style="float:right;">&nbsp;&nbsp;{{animal.dob |  date:"d/M/yyyy"}}&nbsp;&nbsp;</span>
                                 <span class="badge" style="float:right;">{{animal.sex}}</span>
                             </li>
                         </ul>
@@ -137,7 +136,7 @@
                         <ul class="list-group" style="height:150px; overflow-y:auto;">
                             <li ng-repeat="weightPt in farmer.herds[selHerd.item].animals[selAnimal.item].weights | orderBy:'-taken'"
                                 class="list-group-item">
-                                <strong>{{weightPt.taken | date: 'shortDate'}}</strong><span style="float:right;">&nbsp;{{weightPt.weight}}kgs</span>
+                                <strong>{{weightPt.taken |  date:"d/M/yyyy"}}</strong><span style="float:right;">&nbsp;{{weightPt.weight}}kgs</span>
                             </li>
                         </ul>
                     </div>
@@ -155,7 +154,7 @@
                         <div class="row">
                             <div class="col-xs-6" style="padding-right:2px;">
                                 <p class="input-group">
-                                    <input type="text" class="form-control" datepicker-popup="dd/MM/yy"
+                                    <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yy"
                                            ng-model="changed" is-open="openedFeed" placeholder="Date Feed Change"
                                            datepicker-options="{formatYear: 'yy',startingDay: 1}" close-text="Close"/>
                               <span class="input-group-btn">
@@ -172,8 +171,20 @@
                                 </p>
                             </div>
                         </div>
-                        <input name="feedType" type="text" data-ng-model="food" class="form-control"
-                               placeholder="Food Details">
+                        <!-- <input name="feedType" type="text" data-ng-model="food" class="form-control"
+                               placeholder="Food Details"> -->
+                        <div class="row">
+                          <div class="col-xs-12 col-md-12">
+                           <div class="btn-group btn-block input-group" uib-dropdown is-open="status.isopen">
+                            <button id="single-button" type="button" class="btn btn-primary btn-block" uib-dropdown-toggle ng-disabled="!qty || !changed" >
+                              Choose Feed <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                              <li role="menuitem" data-ng-repeat="fed in feeds"><a href="#" ng-click="addFeed(fed)">{{fed.title}}</a></li>
+                            </ul>
+                          </div>
+                          </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-xs-3">

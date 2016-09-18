@@ -1,87 +1,71 @@
 'use strict';
 
-angular.module('feeds').controller('FeedsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Feeds',
-    function ($scope, $stateParams, $location, Authentication, Feeds) {
+angular.module('feeds').controller('FeedsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Feeds','Foods',
+    function ($scope, $stateParams, $location, Authentication, Feeds, Foods) {
         $scope.authentication = Authentication;
 
+        $scope.selFood = {item: -1};
         $scope.selMix = {item: -1};        // for editing
-        $scope.selAnimal = {item: -1};
-
-        $scope.viewAllmixes = true;
-        $scope.viewHerd = -1;           // for viewing
-        $scope.viewAnimal = null;
-
-        $scope.stat1 = 3;
-        $scope.stat2 = 4;
-        $scope.stat3 = 5;
-        $scope.stat4 = 6;
-
-        ////////////////////////////////////////////////////////////////////////////////////////
-        ///////////// Query database
-        ////////////////////////////////////////////////////////////////////////////////////////
-        var oldestDateWeight;
-        var dailyWeightGain = [];
-        var mixestats;  // ADWG for each animal within herd by date
-        var animalADWG = [];    // NEEDED?
-        $scope.herdADWG = [];  // avg ADWG for each herd (by date)
-        $scope.chartLabels = [];
-        $scope.chartData = [];
+        $scope.types = ['success','danger','warning','info'];
 
         ////////////////////////////////////////////////////////////////////////////////////////
         ///////////// EDIT functions
         ////////////////////////////////////////////////////////////////////////////////////////
-        $scope.addHerd = function () {
-            $scope.feed.mixes.push({herdName: $scope.newHerdName, animals: [], feeds: []});
+        $scope.foods = Foods.query();
+        // $scope.firstFood = Foods.find()[0];
+
+
+        $scope.addFood = function () {    // Permit farmer to add a new Food ingredient (globally for this user)
+          var food = new Foods({
+              title: this.foodID
+          });
+          food.$save(function (response) {
+              $scope.foodID = '';
+              $scope.foods = Foods.query();
+          }, function (errorResponse) {
+              $scope.error = errorResponse.data.message;
+          });
+        };
+
+        $scope.delFood = function(food) {   // Removes a Food from use by this farmer - careful as breaks mixes that have this Food
+          food.$delete(function (response) {
+            $scope.foods = Foods.query();
+          }, function (errorResponse) {
+            $scope.error = errorResponse.data.message;
+            console.log(errorResponse.data.message);
+          });
+        };
+
+        $scope.addToMix = function () {
+            if ($scope.selFood.item < 0) return;
+            // should check if this Food is already in Mix else return;
+            $scope.feed.mixes.push(
+              {
+                food: $scope.foods[$scope.selFood.item].title,
+                shareOfFeed: 25
+              });
+            for (var i = 0; i < $scope.feed.mixes.length; i++) {
+              $scope.feed.mixes[i].shareOfFeed = 100/$scope.feed.mixes.length;
+            }
             $scope.selMix.item = $scope.feed.mixes.length - 1;
-            $scope.newHerdName = '';
         };
 
-        $scope.addFeed = function () {
-            if ($scope.selMix.item < 0) return;
-            // check if no feed array in place
-            //if (!$scope.feed.mixes[$scope.selMix.item].feeds) { $scope.feed.mixes[$scope.selMix.item].feeds = new Array()};
-            $scope.feed.mixes[$scope.selMix.item].feeds.push({
-                changed: $scope.changed,
-                qty: $scope.qty,
-                food: $scope.food
-            });
-            $scope.changed = $scope.qty = $scope.food = '';
+        $scope.selectMix = function(idx) {
+          $scope.selMix.item = idx;
         };
 
-        $scope.addAnimal = function () {
-            if ($scope.selMix.item < 0) return;
-            $scope.feed.mixes[$scope.selMix.item].animals.push({
-                tagID: $scope.newTagID,
-                sex: $scope.sex,
-                dob: $scope.dob,
-                weights: []
-            });
-            $scope.selAnimal.item = $scope.feed.mixes[$scope.selMix.item].length - 1;
-            $scope.newTagID = $scope.sex = $scope.dob = '';
-        };
-
-        $scope.delAnimal = function (toDelete) {
+        $scope.delMix = function (toDelete) { // remove a Food from the Mix
             if (toDelete < 0) return;
-            $scope.feed.mixes[$scope.selMix.item].animals.splice(toDelete, 1);
-        };
-
-        $scope.delFeed = function (toDelete) {
-            if (toDelete < 0) return;
-            $scope.feed.mixes[$scope.selMix.item].feeds.splice(toDelete, 1);
+            $scope.feed.mixes.splice(toDelete, 1);
         };
 
         $scope.create = function () {
             var feed = new Feeds({
                 title: this.title,
-                firstName: this.firstName,
-                lastName: this.lastName,
-                address1: this.address1,
-                address2: this.address2,
-                town: this.town,
                 mixes: []
             });
             feed.$save(function (response) {
-                $location.path('feeds/' + response._id);
+                $location.path('feeds/' + response._id + '/edit');
 
                 $scope.title = '';
                 $scope.content = '';
@@ -120,17 +104,15 @@ angular.module('feeds').controller('FeedsController', ['$scope', '$stateParams',
             $scope.feeds = Feeds.query();
         };
 
-        $scope.findOne = function () {	// this retrieves the displayed Feed FIRST (in ng-init) so it's in $scope from get go
+        $scope.findOne = function () {	// this retrieves the displayed Farmer FIRST (in ng-init) so it's in $scope from get go
             $scope.feed = Feeds.get({
                     feedId: $stateParams.feedId
                 },
                 function () {
                     if ($scope.feed.mixes.length > 0) {
                         $scope.selMix.item = 0;
-                        if ($scope.feed.mixes[0].animals.length > 0)
-                            $scope.selAnimal.item = 0;
                     }
-                }	// sets ensures first Herd is selected
+                }
             );
         };
     }

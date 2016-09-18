@@ -5,94 +5,93 @@
  */
 var path = require('path'),
 	mongoose = require('mongoose'),
-	Feed = mongoose.model('Feed'),
+	Food = mongoose.model('Food'),
 	errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 /**
- * Create a feed
+ * Create a food
  */
 exports.create = function(req, res) {
-	var feed = new Feed(req.body);
-	feed.user = req.user;
+	var food = new Food(req.body);
+	food.user = req.user;
 
-	feed.save(function(err) {
+	food.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.json(feed);
+			res.json(food);
 		}
 	});
 };
 
 /**
- * Show the current feed
+ * Show the current food
  */
 exports.read = function(req, res) {
-	res.json(req.feed);
+	res.json(req.food);
 };
 
 /**
- * Update a feed
+ * Update a food
  */
 exports.update = function(req, res) {
-	var feed = req.feed;
+	var food = req.food;
 
-	feed.title = req.body.title;
-	feed.mixes = req.body.mixes;
+	food.title = req.body.title;
 
-	feed.save(function(err) {
+	food.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.json(feed);
+			res.json(food);
 		}
 	});
 };
 
 /**
- * Delete an feed
+ * Delete an food
  */
 exports.delete = function(req, res) {
-	var feed = req.feed;
+	var food = req.food;
 
-	feed.remove(function(err) {
+	food.remove(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.json(feed);
+			res.json(food);
 		}
 	});
 };
 
 /**
- * List of feeds
+ * List of foods
  */
 exports.list = function(req, res) {
-	Feed.find().sort('-created').populate('user', 'displayName').exec(function(err, feeds) {
+	Food.find().sort('-created').populate('user', 'displayName').exec(function(err, foods) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.json(feeds);
+			res.json(foods);
 		}
 	});
 };
 
 /**
- * feed middleware
+ * food middleware
  */
-exports.feedByID = function(req, res, next, id) {
-	Feed.findById(id).populate('user', 'displayName').exec(function(err, feed) {
+exports.foodByID = function(req, res, next, id) {
+	Food.findById(id).populate('user', 'displayName').exec(function(err, food) {
 		if (err) return next(err);
-		if (!feed) return next(new Error('Failed to load feed ' + id));
-		req.feed = feed;
+		if (!food) return next(new Error('Failed to load food ' + id));
+		req.food = food;
 		next();
 	});
 };
